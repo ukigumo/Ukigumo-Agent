@@ -17,7 +17,7 @@ my $build = Module::Build::Pluggable->new(
     name        => 'Ukigumo-Agent',
     module_name => 'Ukigumo::Agent',
 
-    # script_files => [''],
+    script_files => ['bin/ukigumo-agent'],
 
     test_files => (-d '.git' || $ENV{RELEASE_TESTING}) ? 't/ xt/' : 't/',
     recursive_test_files => 1,
