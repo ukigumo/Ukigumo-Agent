@@ -11,26 +11,21 @@
         section {
             padding-top: 20px;
         }
+        .container {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Ukigumo Agent server</h1>
-        <p>This is ukigumo agent server.</p>
+        <div class="pull-left">
+            <h1>Ukigumo Agent server</h1>
+            <p>This is ukigumo agent server.</p>
+        </div>
+        <img src="/static/img/ukigumo-chan.png" class="pull-right">
 
         <div class="row">
             <div class="span12">
-                <section>
-                    <div class="page-header">
-                        <h2>Server status</h2>
-                    </div>
-                    <table class="table">
-                        <tr><th>Server URL</th><td>[% server_url %]</td></tr>
-                        <tr><th>Max children</th><td>[% max_children %]</td></tr>
-                        <tr><th>Work dir</th><td>[% work_dir %]</td></tr>
-                    </table>
-                </section>
-
                 <section>
                 <div class="page-header">
                     <h2>Running jobs</h2>
@@ -54,6 +49,18 @@
             [% END %]
                 </ul>
                 </section>
+
+                <section>
+                    <div class="page-header">
+                        <h2>Server status</h2>
+                    </div>
+                    <table class="table">
+                        <tr><th>Server URL</th><td>[% server_url %]</td></tr>
+                        <tr><th>Max children</th><td>[% max_children %]</td></tr>
+                        <tr><th>Work dir</th><td>[% work_dir %]</td></tr>
+                    </table>
+                </section>
+
             </div>
         </div>
     </div>
