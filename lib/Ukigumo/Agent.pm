@@ -9,6 +9,8 @@ sub config { +{ } }
 
 use Ukigumo::Agent::Dispatcher;
 
+__PACKAGE__->load_plugin(qw(Web::JSON));
+
 sub dispatch {
     my ($c) = @_;
     return Ukigumo::Agent::Dispatcher->dispatch($c);

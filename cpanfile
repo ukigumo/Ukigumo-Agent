@@ -2,7 +2,8 @@ requires 'parent'                        => '0';
 requires 'Plack'                         => '0.9949';
 requires 'Twiggy';
 requires 'Amon2';
-requires 'Ukigumo::Client';
+requires 'Ukigumo::Client' => '0.15';
+requires 'Data::Validator';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.38';
