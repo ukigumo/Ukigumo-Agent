@@ -4,6 +4,8 @@ requires 'Twiggy';
 requires 'Amon2';
 requires 'Ukigumo::Client' => '0.15';
 requires 'Data::Validator';
+requires 'Text::Xslate';
+requires 'Data::Thunk';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.38';

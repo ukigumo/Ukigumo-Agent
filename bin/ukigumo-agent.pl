@@ -12,6 +12,7 @@ use Plack::Builder;
 use Ukigumo::Agent::Manager;
 use Ukigumo::Agent;
 use Getopt::Long;
+use Pod::Usage;
 
 my $port = 1984;
 my $host = '127.0.0.1';
@@ -21,6 +22,8 @@ GetOptions(
     'h|host=i' => \$host,
     'p|port=i' => \$port,
 );
+$work_dir or pod2usage();
+$server_url or pod2usage();
 
 my $manager = Ukigumo::Agent::Manager->new(
     work_dir   => $work_dir,
@@ -42,3 +45,21 @@ $twiggy->register_service($app);
 print "http://${host}:${port}/\n";
 
 AE::cv->recv;
+__END__
+
+=head1 NAME
+
+ukigumo-agent.pl - CI agent server
+
+=head1 SYNOPSIS
+
+    % ukigumo-agent.pl --server_url=http://example.com/
+        
+        --server_url=http://example.com  ukigumo-server URL
+        --work_dir=/tmp/                 working directory
+        --host=127.0.0.1                 Bind host
+        --port=80                        Bind port(Default: 1984)
+
+=head1 DESCRIPTION
+
+ukigumo-agent.pl is CI agent server, runs test cases.

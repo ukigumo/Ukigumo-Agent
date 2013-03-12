@@ -16,3 +16,6 @@ MYMETA.*
 META.json
 META.yml
 README
+/local/
+/.carton
+carton.lock

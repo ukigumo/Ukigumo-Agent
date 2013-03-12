@@ -17,6 +17,12 @@ sub dispatch {
 }
 
 {
+    use Ukigumo::Agent::View;
+    my $view = Ukigumo::Agent::View->make_instance(__PACKAGE__);
+    sub create_view { $view }
+}
+
+{
     my $_manager;
     sub register_manager { $_manager = $_[1] }
     sub manager { $_manager || die "Missing manager" }

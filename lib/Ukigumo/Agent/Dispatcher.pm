@@ -7,6 +7,11 @@ use Amon2::Web::Dispatcher::Lite;
 use Ukigumo::Agent::Manager;
 use Data::Validator;
 
+get '/' => sub {
+    my $c = shift;
+    $c->render('index.tt');
+};
+
 my $rule = Data::Validator->new(
     repository => { isa => 'Str' },
     branch     => { isa => 'Str' },
