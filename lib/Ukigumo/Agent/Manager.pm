@@ -28,7 +28,7 @@ sub push_job {
 
 sub pop_job {
     my ($self, $job) = @_;
-    push @{$self->{job_queue}}, $job;
+    pop @{$self->{job_queue}};
 }
 
 sub run_job {
@@ -45,15 +45,22 @@ sub run_job {
 
     if ($pid) {
         print "Spawned $pid\n";
-        $self->{children}->{$pid} = AE::child($pid, sub {
-            my ($pid, $status) = @_;
-            print "[child exit] pid: $pid, status: $status\n";
-            delete $self->{children}->{$pid};
+        $self->{children}->{$pid} = +{
+            child => AE::child($pid, sub {
+                my ($pid, $status) = @_;
+                print "[child exit] pid: $pid, status: $status\n";
+                delete $self->{children}->{$pid};
 
-            if ($self->count_children < $self->max_children && $self->count_children > 0) {
-                $self->run_job($self->pop_job);
-            }
-        });
+                if ($self->count_children < $self->max_children && @{$self->job_queue} > 0) {
+                    print "[child exit] run new job\n";
+                    $self->run_job($self->pop_job);
+                } else {
+                    print "[child exit] There is no jobs. sleep...\n";
+                }
+            }),
+            job => $args,
+            start => time(),
+        };
     } else {
         eval {
             my $vc = Ukigumo::Client::VC::Git->new(
@@ -61,9 +68,9 @@ sub run_job {
                 repository => $repository,
             );
             my $client = Ukigumo::Client->new(
-                workdir => $self->work_dir,
-                vc => $vc,
-                executor => Ukigumo::Client::Executor::Perl->new(),
+                workdir    => $self->work_dir,
+                vc         => $vc,
+                executor   => Ukigumo::Client::Executor::Perl->new(),
                 server_url => $self->server_url,
             );
             $client->run();
@@ -76,8 +83,6 @@ sub run_job {
 
 sub register_job {
     my ($self, $params) = @_;
-
-    $self->push_job($params);
 
     if ($self->count_children < $self->max_children) {
         # run job.

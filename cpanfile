@@ -6,6 +6,7 @@ requires 'Ukigumo::Client' => '0.15';
 requires 'Data::Validator';
 requires 'Text::Xslate';
 requires 'Data::Thunk';
+requires 'Time::Duration';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.38';

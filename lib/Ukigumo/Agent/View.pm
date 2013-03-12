@@ -17,6 +17,14 @@ sub make_instance {
     my $xslate = Text::Xslate->new(
         syntax => 'TTerse',
         path => ["$path"],
+        module => [
+            'Text::Xslate::Bridge::Star',
+            'Time::Piece' => ['localtime'],
+            'Time::Duration' => ['duration'],
+        ],
+        function => {
+            time => sub { time() },
+        },
     );
 }
 

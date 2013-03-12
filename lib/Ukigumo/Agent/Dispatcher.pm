@@ -9,7 +9,16 @@ use Data::Validator;
 
 get '/' => sub {
     my $c = shift;
-    $c->render('index.tt');
+
+    $c->render(
+        'index.tt' => {
+            children     => $c->manager->children,
+            job_queue    => $c->manager->job_queue,
+            server_url   => $c->manager->server_url,
+            work_dir     => $c->manager->work_dir,
+            max_children => $c->manager->max_children,
+        }
+    );
 };
 
 my $rule = Data::Validator->new(

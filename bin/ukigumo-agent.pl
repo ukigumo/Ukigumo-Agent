@@ -13,6 +13,10 @@ use Ukigumo::Agent::Manager;
 use Ukigumo::Agent;
 use Getopt::Long;
 use Pod::Usage;
+use FIle::ShareDir qw(dist_dir);
+use List::Util qw(first);
+use Data::Thunk qw(lazy);
+use Plack::App::File;
 
 my $port = 1984;
 my $host = '127.0.0.1';
@@ -31,9 +35,18 @@ my $manager = Ukigumo::Agent::Manager->new(
 );
 Ukigumo::Agent->register_manager($manager);
 
+my $static_dir = first { -d $_ } (
+    lazy { File::Spec->catfile(Ukigumo::Agent->base_dir, 'share/static') },
+    lazy { File::ShareDir::dist_dir('Ukigumo-Agent', 'static') },
+);
+
 my $app = builder {
     enable 'AccessLog';
-    Ukigumo::Agent->to_app();
+
+    mount '/static/' => Plack::App::File->new(
+        {root => $static_dir}
+    );
+    mount '/' => Ukigumo::Agent->to_app();
 };
 
 my $twiggy = Twiggy::Server->new(

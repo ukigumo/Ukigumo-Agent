@@ -3,8 +3,59 @@
 <head>
     <meta charset=utf8>
     <title>Ukigumo-Agent</title>
+    <link href="/static/bootstrap/css/bootstrap.css" media="screen" rel="stylesheet" type="text/css">
+    <style>
+        .at-sign {
+            color: #ee1111;
+        }
+        section {
+            padding-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    This is ukigumo agent server.
+    <div class="container">
+        <h1>Ukigumo Agent server</h1>
+        <p>This is ukigumo agent server.</p>
+
+        <div class="row">
+            <div class="span12">
+                <section>
+                    <div class="page-header">
+                        <h2>Server status</h2>
+                    </div>
+                    <table class="table">
+                        <tr><th>Server URL</th><td>[% server_url %]</td></tr>
+                        <tr><th>Max children</th><td>[% max_children %]</td></tr>
+                        <tr><th>Work dir</th><td>[% work_dir %]</td></tr>
+                    </table>
+                </section>
+
+                <section>
+                <div class="page-header">
+                    <h2>Running jobs</h2>
+                </div>
+            [% FOR k IN children.keys() %]
+                <h3>[% children[k].job.repository %]<span class="at-sign">@</span>[% children[k].job.branch %]</h3>
+                <table class="table">
+                <tr><th>PID</th><td>[% k %]</td></tr>
+                <tr><th>Elapsed</th><td>[% duration(time() - children[k].start) %]</td></tr>
+                </table>
+            [% END %]
+                </section>
+
+                <section>
+                <div class="page-header">
+                    <h2>Waiting jobs</h2>
+                </div>
+                <ul>
+            [% FOR job IN job_queue %]
+                <li>[% job.repository %]<span class="at-sign">@</span>[% job.branch %]</li>
+            [% END %]
+                </ul>
+                </section>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
