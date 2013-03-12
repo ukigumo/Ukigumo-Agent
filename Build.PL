@@ -21,6 +21,8 @@ my $build = Module::Build::Pluggable->new(
 
     test_files => (-d '.git' || $ENV{RELEASE_TESTING}) ? 't/ xt/' : 't/',
     recursive_test_files => 1,
+
+    share_dir => 'share',
    
     create_readme  => 1,
     create_license => 1,
