@@ -9,23 +9,9 @@ This server runs test cases by git hooks.
 
 ## Installation
 
-### Install from Git
+You can install released version from CPAN!
 
-First, install carton to your system
-
-    % curl -L http://cpanmin.us | perl - Carton
-
-And setup the depended modules.
-
-    % carton install
-
-Then, run the http server!
-
-    % carton exec -- perl bin/ukigumo-agent --work_dir=$HOME/.ukigumo/ --server_url=http://127.0.0.1:5000
-
-### Install from CPAN
-
-TBD
+    % curl -L http://cpanmin.us | perl - Ukigumo::Agent
 
 ## Git hooks
 
