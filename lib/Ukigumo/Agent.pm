@@ -35,17 +35,11 @@ __END__
 
 =head1 NAME
 
-Ukigumo::Agent - ...
-
-=head1 SYNOPSIS
-
-  use Ukigumo::Agent;
+Ukigumo::Agent - Ukigumo test runner server
 
 =head1 DESCRIPTION
 
-Ukigumo::Agent is
-
-B<THIS IS A DEVELOPMENT RELEASE. API MAY CHANGE WITHOUT NOTICE>.
+Look L<ukigumo-agent.pl>.
 
 =head1 AUTHOR
 
