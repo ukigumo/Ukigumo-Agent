@@ -1,9 +1,29 @@
 .travis.yml
+bin/ukigumo-agent
 Build.PL
 Changes
 cpanfile
 lib/Ukigumo/Agent.pm
+lib/Ukigumo/Agent/Dispatcher.pm
+lib/Ukigumo/Agent/Manager.pm
+lib/Ukigumo/Agent/View.pm
+LICENSE
 MANIFEST			This list of files
+META.json
+META.yml
+README
+README.md
+share/static/bootstrap/css/bootstrap-responsive.css
+share/static/bootstrap/css/bootstrap-responsive.min.css
+share/static/bootstrap/css/bootstrap.css
+share/static/bootstrap/css/bootstrap.min.css
+share/static/bootstrap/img/glyphicons-halflings-white.png
+share/static/bootstrap/img/glyphicons-halflings.png
+share/static/bootstrap/js/bootstrap.js
+share/static/bootstrap/js/bootstrap.min.js
+share/static/img/ukigumo-chan.png
+share/static/robots.txt
+share/tmpl/index.tt
 t/00_compile.t
 xt/01_podspell.t
 xt/02_perlcritic.t
@@ -11,7 +31,3 @@ xt/03_pod.t
 xt/04_minimum_version.t
 xt/05_cpan_meta.t
 xt/06_meta_author.t
-README
-LICENSE
-META.yml
-META.json

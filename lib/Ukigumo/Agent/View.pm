@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use utf8;
 use Text::Xslate;
-use FIle::ShareDir qw(dist_dir);
+use File::ShareDir qw(dist_dir);
 use List::Util qw(first);
 use Data::Thunk qw(lazy);
 
