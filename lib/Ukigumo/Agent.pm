@@ -28,6 +28,27 @@ sub dispatch {
     sub manager { $_manager || die "Missing manager" }
 }
 
+use File::ShareDir;
+use MRO::Compat;
+use List::Util qw(first);
+
+my %SHARE_DIR_CACHE;
+sub share_dir {
+    my $c = shift;
+
+    $SHARE_DIR_CACHE{ref $c||$c} ||= sub {
+        my $d1 = File::Spec->catfile($c->base_dir, 'share');
+        return $d1 if -d $d1;
+
+        my $dist = first { $_ ne 'Amon2' && $_ ne 'Amon2::Web' && $_->isa('Amon2') } reverse @{mro::get_linear_isa(ref $c || $c)};
+           $dist =~ s!::!-!g;
+        my $d2 = File::ShareDir::dist_dir($dist);
+        return $d2 if -d $d2;
+
+        Carp::croak "Cannot find assets path($d1, $d2).";
+    }->();
+}
+
 1;
 __END__
 

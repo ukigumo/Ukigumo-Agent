@@ -5,9 +5,9 @@ requires 'Amon2';
 requires 'Ukigumo::Client' => '0.15';
 requires 'Data::Validator';
 requires 'Text::Xslate';
-requires 'Data::Thunk';
 requires 'Time::Duration';
 requires 'File::ShareDir';
+requires 'MRO::Compat';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.38';
