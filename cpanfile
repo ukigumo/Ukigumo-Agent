@@ -7,6 +7,7 @@ requires 'Data::Validator';
 requires 'Text::Xslate';
 requires 'Data::Thunk';
 requires 'Time::Duration';
+requires 'File::ShareDir';
 
 on 'configure' => sub {
     requires 'Module::Build' => '0.38';
