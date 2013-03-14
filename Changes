@@ -1,5 +1,9 @@
 Revision history for Perl extension Ukigumo::Agent
 
+0.0.6 2013-03-14T17:45:43
+
+    - use Amon2::Plugin::ShareDir
+
 0.0.5 2013-03-14T14:51:51
 
     - re-release
