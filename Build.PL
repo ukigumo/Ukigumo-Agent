@@ -23,6 +23,8 @@ my $build = Module::Build::Pluggable->new(
     recursive_test_files => 1,
 
     share_dir => 'share',
+
+    script_files => ['bin/ukigumo-agent'],
    
     create_readme  => 1,
     create_license => 1,
