@@ -22,7 +22,7 @@ my $host = '127.0.0.1';
 GetOptions(
     'work_dir=s'   => \my $work_dir,
     'server_url=s' => \my $server_url,
-    'h|host=i' => \$host,
+    'h|host=s' => \$host,
     'p|port=i' => \$port,
 );
 $work_dir or pod2usage();
