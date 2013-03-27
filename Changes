@@ -1,5 +1,13 @@
 Revision history for Perl extension Ukigumo::Agent
 
+{{$NEXT}}
+
+0.0.7 2013-03-27T03:35:27Z
+
+    - 4922262 `host` parameter needs string.
+      https://github.com/ukigumo/Ukigumo-Agent/issues/1
+      (Reported by bokutin++)
+
 0.0.6 2013-03-14T17:45:43
 
     - use Amon2::Plugin::ShareDir
