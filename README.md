@@ -1,34 +1,20 @@
-Ukigumo-Agent
-=============
+# NAME
 
-Test runner server for [Ukigumo CI tool set](http://ukigumo.github.com/ukigumo/).
+Ukigumo::Agent - Ukigumo test runner server
 
-![Screen shot](http://gyazo.64p.org/image/8896fde65e8d9e8020fb6eb3e2bc888e.png)
+# DESCRIPTION
 
-This server runs test cases by git hooks.
+Look [ukigumo-agent.pl](http://search.cpan.org/perldoc?ukigumo-agent.pl).
 
-## Installation
+# AUTHOR
 
-You can install released version from CPAN!
+Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>
 
-    % curl -L http://cpanmin.us | perl - Ukigumo::Agent
+# SEE ALSO
 
-## Git hooks
+# LICENSE
 
-You can add hook script for your remote git repo.
+Copyright (C) Tokuhiro Matsuno
 
-Put following code to `hooks/post-receive`, and `chmod +x`.
-
-    #!/bin/sh
-    
-    while read oldrev newrev refname
-    do
-        branch=$(git rev-parse --symbolic --abbrev-ref $refname)
-        repo_url=git://example.com/example.git
-        ukigumo_base="http://127.0.0.1:1984"
-
-        curl --fail --silent -X POST "$ukigumo_base/api/v0/enqueue?repository=$repo_url&branch=$branch&oldrev=$oldrev&newrev=$newrev"
-    done
-
-Then, git repo calls ukigumo-agent server after push, automatically.
-
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
