@@ -2,6 +2,10 @@ Revision history for Perl extension Ukigumo::Agent
 
 {{$NEXT}}
 
+0.0.8 2013-03-28T02:47:35Z
+
+    - re-packaging
+
 0.0.7 2013-03-27T03:35:27Z
 
     - 4922262 `host` parameter needs string.
