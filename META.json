@@ -16,10 +16,17 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.38",
-            "Module::Build::Pluggable" : "0",
-            "Module::Build::Pluggable::CPANfile" : "0",
-            "Module::Build::Pluggable::GithubMeta" : "0"
+            "CPAN::Meta" : "0",
+            "Module::Build" : "0.38"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Pod::Wordlist::hanekomu" : "0",
+            "Test::CPAN::Meta" : "0",
+            "Test::MinimumVersion" : "0.10108",
+            "Test::Pod" : "1.41",
+            "Test::Spelling" : "0"
          }
       },
       "runtime" : {
