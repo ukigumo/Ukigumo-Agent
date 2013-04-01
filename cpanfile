@@ -9,12 +9,9 @@ requires 'Text::Xslate';
 requires 'Time::Duration';
 requires 'File::ShareDir';
 requires 'MRO::Compat';
+requires 'Mouse';
 
 on 'test' => sub {
     requires 'Test::More' => '0.98';
-    requires 'Test::Requires' => 0;
 };
 
-on 'devel' => sub {
-    # Dependencies for developers
-};
