@@ -2,7 +2,7 @@ package Ukigumo::Agent;
 use strict;
 use warnings;
 use 5.008005;
-our $VERSION = '0.0.10';
+use version; our $VERSION = version->declare("v0.0.10");
 use parent qw(Amon2 Amon2::Web);
 
 sub config { +{ } }
