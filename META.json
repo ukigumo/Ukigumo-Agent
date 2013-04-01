@@ -36,6 +36,7 @@
             "Data::Validator" : "0",
             "File::ShareDir" : "0",
             "MRO::Compat" : "0",
+            "Mouse" : "0",
             "Plack" : "0.9949",
             "Text::Xslate" : "0",
             "Time::Duration" : "0",
@@ -46,8 +47,7 @@
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0.98",
-            "Test::Requires" : "0"
+            "Test::More" : "0.98"
          }
       }
    },
@@ -63,5 +63,8 @@
          "web" : "https://github.com/ukigumo/Ukigumo-Agent"
       }
    },
-   "version" : "0.0.9"
+   "version" : "0.0.10",
+   "x_contributors" : [
+      "tokuhirom <tokuhirom@gmail.com>"
+   ]
 }
