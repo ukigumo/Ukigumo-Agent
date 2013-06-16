@@ -24,3 +24,4 @@ carton.lock
 /Build
 !Build/
 !META.json
+!LICENSE
