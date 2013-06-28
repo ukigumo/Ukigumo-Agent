@@ -3,7 +3,7 @@
 <head>
     <meta charset=utf8>
     <title>Ukigumo-Agent</title>
-    <link href="/static/bootstrap/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="[% uri_for('/static/bootstrap/css/bootstrap.min.css') %]" media="screen" rel="stylesheet" type="text/css">
     <style>
         .at-sign {
             color: #ee1111;
@@ -22,7 +22,7 @@
             <h1>Ukigumo Agent server</h1>
             <p>This is ukigumo agent server.</p>
         </div>
-        <img src="/static/img/ukigumo-chan.png" class="pull-right">
+        <img src="[% uri_for('/static/img/ukigumo-chan.png') %]" class="pull-right">
 
         <div class="row">
             <div class="span12">
