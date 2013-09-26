@@ -6,6 +6,7 @@ use utf8;
 use Amon2::Web::Dispatcher::Lite;
 use Ukigumo::Agent::Manager;
 use Data::Validator;
+use JSON;
 
 get '/' => sub {
     my $c = shift;
@@ -42,5 +43,30 @@ post '/api/v0/enqueue' => sub {
     return $c->render_json(+{});
 };
 
-1;
+post '/api/github_hook' => sub {
+    my $c = shift;
 
+    my $payload = from_json $c->req->content;
+    my $args;
+    eval {
+        # TODO How to pass commit id?
+        # my @commits = @{$payload->{commits}};
+        #   ...
+        # commit => $commits[$#commits]->{id},
+        $args = +{
+            repository => $payload->{repository}->{url},
+            branch => $payload->{repository}->{master_branch},
+        };
+    };
+    if ($@) {
+        my $res = $c->render_json({errors => $@});
+        $res->code(400);
+        return $res;
+    }
+
+    $c->manager->register_job($args);
+
+    return $c->render_json(+{});
+};
+
+1;
