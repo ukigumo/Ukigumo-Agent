@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use utf8;
 
-use Amon2::Web::Dispatcher::Lite;
+use Amon2::Web::Dispatcher::RouterBoom;
 use Ukigumo::Agent::Manager;
 use Data::Validator;
 use JSON;
