@@ -17,6 +17,8 @@ use List::Util qw(first);
 use File::Spec;
 use Plack::App::File;
 
+$|++;
+
 my $port = 1984;
 my $host = '127.0.0.1';
 GetOptions(
