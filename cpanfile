@@ -11,6 +11,7 @@ requires 'File::ShareDir';
 requires 'MRO::Compat';
 requires 'Mouse';
 requires 'Router::Boom';
+requires 'Log::Minimal';
 
 on 'test' => sub {
     requires 'Test::More' => '0.98';

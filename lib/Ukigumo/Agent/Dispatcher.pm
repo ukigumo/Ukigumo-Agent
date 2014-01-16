@@ -7,6 +7,7 @@ use Amon2::Web::Dispatcher::RouterBoom;
 use Ukigumo::Agent::Manager;
 use Data::Validator;
 use JSON;
+use Log::Minimal;
 
 get '/' => sub {
     my $c = shift;
@@ -46,20 +47,27 @@ post '/api/v0/enqueue' => sub {
 post '/api/github_hook' => sub {
     my $c = shift;
 
-    my $payload = from_json $c->req->content;
+    my $payload = from_json $c->req->param('payload');
     my $args;
     eval {
         # TODO How to pass commit id?
         # my @commits = @{$payload->{commits}};
         #   ...
         # commit => $commits[$#commits]->{id},
+        my $repo_url = $payload->{repository}->{url};
+        if ($ENV{UKIGUMO_AGENT_GITHUB_HOOK_FORCE_GIT_URL}) {
+            # From: https://github.com/tokuhirom/plenv.git
+            # To: git@github.com:tokuhirom/plenv.git
+            $repo_url =~ s!\Ahttps?://([^/]+)/!git\@$1:!;
+        }
         $args = +{
-            repository => $payload->{repository}->{url},
+            repository => $repo_url,
             branch => $payload->{repository}->{master_branch},
         };
     };
-    if ($@) {
-        my $res = $c->render_json({errors => $@});
+    if (my $e = $@) {
+        warnf("An error occured: %s", $e);
+        my $res = $c->render_json({errors => $e});
         $res->code(400);
         return $res;
     }
