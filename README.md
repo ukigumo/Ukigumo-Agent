@@ -1,10 +1,11 @@
+[![Build Status](https://travis-ci.org/ukigumo/Ukigumo-Agent.png?branch=master)](https://travis-ci.org/ukigumo/Ukigumo-Agent)
 # NAME
 
 Ukigumo::Agent - Ukigumo test runner server
 
 # DESCRIPTION
 
-Look [ukigumo-agent.pl](http://search.cpan.org/perldoc?ukigumo-agent.pl).
+Look [ukigumo-agent.pl](https://metacpan.org/pod/ukigumo-agent.pl).
 
 # AUTHOR
 
