@@ -26,3 +26,4 @@ carton.lock
 !META.json
 !LICENSE
 /Build.bat
+/cpanfile.snapshot
