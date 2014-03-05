@@ -43,17 +43,19 @@
       },
       "runtime" : {
          "requires" : {
-            "Amon2" : "3.76",
+            "Amon2" : "6",
             "Amon2::Plugin::ShareDir" : "0",
             "Data::Validator" : "0",
             "File::ShareDir" : "0",
+            "Log::Minimal" : "0",
             "MRO::Compat" : "0",
             "Mouse" : "0",
             "Plack" : "0.9949",
+            "Router::Boom" : "0",
             "Text::Xslate" : "0",
             "Time::Duration" : "0",
             "Twiggy" : "0",
-            "Ukigumo::Client" : "0.15",
+            "Ukigumo::Client" : "0.21",
             "parent" : "0",
             "perl" : "5.008005"
          }
