@@ -47,6 +47,7 @@ post '/api/v0/enqueue' => sub {
 post '/api/github_hook' => sub {
     my $c = shift;
 
+    infof("playload: %s", $c->req->param('payload'));
     my $payload = from_json $c->req->param('payload');
     my $args;
     eval {
@@ -60,9 +61,10 @@ post '/api/github_hook' => sub {
             # To: git@github.com:tokuhirom/plenv.git
             $repo_url =~ s!\Ahttps?://([^/]+)/!git\@$1:!;
         }
+        (my $branch = $payload->{ref}) =~ s!\Arefs/heads/!!;
         $args = +{
             repository => $repo_url,
-            branch => $payload->{repository}->{master_branch},
+            branch => $branch || $payload->{repository}->{master_branch},
         };
     };
     if (my $e = $@) {
