@@ -63,8 +63,9 @@ post '/api/github_hook' => sub {
         }
         (my $branch = $payload->{ref}) =~ s!\Arefs/heads/!!;
         $args = +{
-            repository => $repo_url,
-            branch => $branch || $payload->{repository}->{master_branch},
+            repository  => $repo_url,
+            branch      => $branch || $payload->{repository}->{master_branch},
+            compare_url => $payload->{compare} || '',
         };
     };
     if (my $e = $@) {

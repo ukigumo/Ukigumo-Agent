@@ -68,10 +68,11 @@ sub run_job {
                 repository => $repository,
             );
             my $client = Ukigumo::Client->new(
-                workdir    => $self->work_dir,
-                vc         => $vc,
-                executor   => Ukigumo::Client::Executor::Perl->new(),
-                server_url => $self->server_url,
+                workdir     => $self->work_dir,
+                vc          => $vc,
+                executor    => Ukigumo::Client::Executor::Perl->new(),
+                server_url  => $self->server_url,
+                compare_url => $args->{compare_url},
             );
             $client->run();
         };
