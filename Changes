@@ -2,6 +2,15 @@ Revision history for Perl extension Ukigumo::Agent
 
 {{$NEXT}}
 
+v0.0.12 2014-03-13T10:54:14Z
+
+    - Support GitHub webhooks
+      (mattn, tokuhirom)
+    - Support compare_url (for GitHub webhooks)
+      (moznion)
+    - Support GitHub Statuses API
+      (moznion)
+
 v0.0.11 2013-06-16T02:24:21Z
 
     - Older version does not install 'share/' directory.
