@@ -73,6 +73,8 @@ sub run_job {
                 executor    => Ukigumo::Client::Executor::Perl->new(),
                 server_url  => $self->server_url,
                 compare_url => $args->{compare_url},
+                repository_owner => $args->{repository_owner},
+                repository_name  => $args->{repository_name},
             );
             $client->run();
         };
