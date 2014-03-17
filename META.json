@@ -69,16 +69,16 @@
    "release_status" : "unstable",
    "resources" : {
       "bugtracker" : {
-         "web" : "https://github.com/moznion/Ukigumo-Agent/issues"
+         "web" : "https://github.com/ukigumo/Ukigumo-Agent/issues"
       },
-      "homepage" : "https://github.com/moznion/Ukigumo-Agent",
+      "homepage" : "https://github.com/ukigumo/Ukigumo-Agent",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/moznion/Ukigumo-Agent.git",
-         "web" : "https://github.com/moznion/Ukigumo-Agent"
+         "url" : "git://github.com/ukigumo/Ukigumo-Agent.git",
+         "web" : "https://github.com/ukigumo/Ukigumo-Agent"
       }
    },
-   "version" : "v0.0.13",
+   "version" : "v0.0.14",
    "x_contributors" : [
       "Tomohiro Hosaka <bokutin@bokut.in>",
       "mattn <mattn.jp@gmail.com>",

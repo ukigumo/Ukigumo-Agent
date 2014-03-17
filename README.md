@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/moznion/Ukigumo-Agent.png?branch=master)](https://travis-ci.org/moznion/Ukigumo-Agent)
+[![Build Status](https://travis-ci.org/ukigumo/Ukigumo-Agent.png?branch=master)](https://travis-ci.org/ukigumo/Ukigumo-Agent)
 # NAME
 
 Ukigumo::Agent - Ukigumo test runner server
