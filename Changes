@@ -2,6 +2,10 @@ Revision history for Perl extension Ukigumo::Agent
 
 {{$NEXT}}
 
+v0.0.13 2014-03-17T03:50:44Z
+
+    - Update a dependency to Ukigumo::Client (bug fix)
+
 v0.0.12 2014-03-13T10:54:14Z
 
     - Support GitHub webhooks
