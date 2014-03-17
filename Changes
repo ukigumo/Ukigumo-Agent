@@ -2,6 +2,10 @@ Revision history for Perl extension Ukigumo::Agent
 
 {{$NEXT}}
 
+v0.0.15 2014-03-17T15:32:32Z
+
+    - Update a dependency to Ukigumo::Client (bug fix)
+
 v0.0.14 2014-03-17T04:04:21Z
 
     - Fix META
