@@ -55,7 +55,7 @@
             "Text::Xslate" : "0",
             "Time::Duration" : "0",
             "Twiggy" : "0",
-            "Ukigumo::Client" : "0.24",
+            "Ukigumo::Client" : "0.25",
             "parent" : "0",
             "perl" : "5.010001"
          }
@@ -78,7 +78,7 @@
          "web" : "https://github.com/ukigumo/Ukigumo-Agent"
       }
    },
-   "version" : "v0.0.15",
+   "version" : "v0.0.16",
    "x_contributors" : [
       "Tomohiro Hosaka <bokutin@bokut.in>",
       "mattn <mattn.jp@gmail.com>",
