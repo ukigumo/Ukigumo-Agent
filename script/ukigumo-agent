@@ -26,6 +26,7 @@ GetOptions(
     'server_url=s' => \my $server_url,
     'h|host=s' => \$host,
     'p|port=i' => \$port,
+    'timeout=i' => \my $timeout,
 );
 $work_dir or pod2usage();
 $server_url or pod2usage();
@@ -33,6 +34,7 @@ $server_url or pod2usage();
 my $manager = Ukigumo::Agent::Manager->new(
     work_dir   => $work_dir,
     server_url => $server_url,
+    timeout    => $timeout || 0,
 );
 Ukigumo::Agent->register_manager($manager);
 
@@ -63,11 +65,12 @@ ukigumo-agent.pl - CI agent server
 =head1 SYNOPSIS
 
     % ukigumo-agent.pl --server_url=http://example.com/
-        
+
         --server_url=http://example.com  ukigumo-server URL
         --work_dir=/tmp/                 working directory
         --host=127.0.0.1                 Bind host
-        --port=80                        Bind port(Default: 1984)
+        --port=80                        Bind port (Default: 1984)
+        --timeout=123                    Timeout seconds (Default: Not timeout)
 
 =head1 DESCRIPTION
 

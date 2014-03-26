@@ -13,6 +13,7 @@ has 'work_dir' => ( is => 'rw', isa => 'Str', required => 1 );
 has 'server_url' => ( is => 'rw', isa => 'Str', required => 1 );
 has job_queue => (is => 'ro', default => sub { +[ ] });
 has max_children => ( is => 'ro', default => 1 );
+has timeout => (is => 'rw', isa => 'Int', default => 0);
 
 no Mouse;
 
@@ -61,6 +62,11 @@ sub run_job {
             job => $args,
             start => time(),
         };
+        my $timeout = $self->timeout;
+        if ($timeout > 0) {
+            sleep($timeout);
+            kill 'KILL', $pid;
+        }
     } else {
         eval {
             my $vc = Ukigumo::Client::VC::Git->new(
