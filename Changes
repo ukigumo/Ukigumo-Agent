@@ -2,6 +2,11 @@ Revision history for Perl extension Ukigumo::Agent
 
 {{$NEXT}}
 
+v0.1.0 2014-03-27T23:33:33Z
+
+    - Enable timeout if the job is running too long #8
+      (moznion)
+
 v0.0.16 2014-03-19T08:48:14Z
 
     - Update a dependency to Ukigumo::Client (bug fix again...)
