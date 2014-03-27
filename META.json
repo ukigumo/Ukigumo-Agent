@@ -78,11 +78,11 @@
          "web" : "https://github.com/ukigumo/Ukigumo-Agent"
       }
    },
-   "version" : "v0.1.0",
+   "version" : "v0.1.1",
    "x_contributors" : [
       "Tomohiro Hosaka <bokutin@bokut.in>",
       "mattn <mattn.jp@gmail.com>",
-      "Tokuhiro Matsuno <tokuhirom@gmail.com>",
-      "moznion <moznion@gmail.com>"
+      "moznion <moznion@gmail.com>",
+      "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ]
 }
