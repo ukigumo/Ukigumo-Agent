@@ -48,6 +48,8 @@ sub run_job {
 
     my $timeout_timer;
 
+    my $client;
+
     if ($pid) {
         print "Spawned $pid\n";
         $self->{children}->{$pid} = +{
@@ -56,8 +58,9 @@ sub run_job {
 
                 undef $timeout_timer;
 
-                # Do nothing because the child process was killed
+                # Process has killed because it was timeout
                 if ($status == SIGKILL) {
+                    $client->report_timeout;
                     return;
                 }
 
@@ -86,7 +89,7 @@ sub run_job {
                 branch => $branch,
                 repository => $repository,
             );
-            my $client = Ukigumo::Client->new(
+            $client = Ukigumo::Client->new(
                 workdir     => $self->work_dir,
                 vc          => $vc,
                 executor    => Ukigumo::Client::Executor::Perl->new(),
