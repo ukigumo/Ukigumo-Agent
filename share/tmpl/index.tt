@@ -58,6 +58,7 @@
                         <tr><th>Server URL</th><td>[% server_url %]</td></tr>
                         <tr><th>Max children</th><td>[% max_children %]</td></tr>
                         <tr><th>Work dir</th><td>[% work_dir %]</td></tr>
+                        <tr><th>Timeout</th><td>[% IF timeout > 0 %][% timeout %]sec[% ELSE %]Not timeout[% END %]</td></tr>
                     </table>
                 </section>
 

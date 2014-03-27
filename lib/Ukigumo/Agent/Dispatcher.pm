@@ -19,6 +19,7 @@ get '/' => sub {
             server_url   => $c->manager->server_url,
             work_dir     => $c->manager->work_dir,
             max_children => $c->manager->max_children,
+            timeout      => $c->manager->timeout,
         }
     );
 };

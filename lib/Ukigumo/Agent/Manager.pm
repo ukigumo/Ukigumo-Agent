@@ -13,8 +13,11 @@ has 'work_dir' => ( is => 'rw', isa => 'Str', required => 1 );
 has 'server_url' => ( is => 'rw', isa => 'Str', required => 1 );
 has job_queue => (is => 'ro', default => sub { +[ ] });
 has max_children => ( is => 'ro', default => 1 );
+has timeout => (is => 'rw', isa => 'Int', default => 0);
 
 no Mouse;
+
+use constant SIGKILL => 9;
 
 sub count_children {
     my $self = shift;
@@ -43,11 +46,24 @@ sub run_job {
     my $repository = $args->{repository} || die;
     my $branch     = $args->{branch} || die;
 
+    my $timeout_timer;
+
+    my $client;
+
     if ($pid) {
         print "Spawned $pid\n";
         $self->{children}->{$pid} = +{
             child => AE::child($pid, sub {
                 my ($pid, $status) = @_;
+
+                undef $timeout_timer;
+
+                # Process has killed because it was timeout
+                if ($status == SIGKILL) {
+                    $client->report_timeout;
+                    return;
+                }
+
                 print "[child exit] pid: $pid, status: $status\n";
                 delete $self->{children}->{$pid};
 
@@ -61,13 +77,19 @@ sub run_job {
             job => $args,
             start => time(),
         };
+        my $timeout = $self->timeout;
+        if ($timeout > 0) {
+            $timeout_timer = AE::timer $timeout, 0, sub {
+                kill SIGKILL, $pid;
+            };
+        }
     } else {
         eval {
             my $vc = Ukigumo::Client::VC::Git->new(
                 branch => $branch,
                 repository => $repository,
             );
-            my $client = Ukigumo::Client->new(
+            $client = Ukigumo::Client->new(
                 workdir     => $self->work_dir,
                 vc          => $vc,
                 executor    => Ukigumo::Client::Executor::Perl->new(),
