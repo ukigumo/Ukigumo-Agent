@@ -17,6 +17,8 @@ has timeout => (is => 'rw', isa => 'Int', default => 0);
 
 no Mouse;
 
+use constant SIGKILL => 9;
+
 sub count_children {
     my $self = shift;
     0+(keys %{$self->children});
@@ -44,11 +46,21 @@ sub run_job {
     my $repository = $args->{repository} || die;
     my $branch     = $args->{branch} || die;
 
+    my $timeout_timer;
+
     if ($pid) {
         print "Spawned $pid\n";
         $self->{children}->{$pid} = +{
             child => AE::child($pid, sub {
                 my ($pid, $status) = @_;
+
+                undef $timeout_timer;
+
+                # Do nothing because the child process was killed
+                if ($status == SIGKILL) {
+                    return;
+                }
+
                 print "[child exit] pid: $pid, status: $status\n";
                 delete $self->{children}->{$pid};
 
@@ -64,8 +76,9 @@ sub run_job {
         };
         my $timeout = $self->timeout;
         if ($timeout > 0) {
-            sleep($timeout);
-            kill 'KILL', $pid;
+            $timeout_timer = AE::timer $timeout, 0, sub {
+                kill SIGKILL, $pid;
+            };
         }
     } else {
         eval {
