@@ -17,7 +17,9 @@ has timeout => (is => 'rw', isa => 'Int', default => 0);
 
 no Mouse;
 
-use constant SIGKILL => 9;
+my %Config = (
+    SIGKILL => 9,
+);
 
 sub count_children {
     my $self = shift;
@@ -59,7 +61,7 @@ sub run_job {
                 undef $timeout_timer;
 
                 # Process has killed because it was timeout
-                if ($status == SIGKILL) {
+                if ($status == $Config{SIGKILL}) {
                     $client->report_timeout;
                     return;
                 }
@@ -80,7 +82,7 @@ sub run_job {
         my $timeout = $self->timeout;
         if ($timeout > 0) {
             $timeout_timer = AE::timer $timeout, 0, sub {
-                kill SIGKILL, $pid;
+                kill $Config{SIGKILL}, $pid;
             };
         }
     } else {
