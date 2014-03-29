@@ -13,6 +13,7 @@ requires 'MRO::Compat';
 requires 'Mouse';
 requires 'Router::Boom';
 requires 'Log::Minimal';
+requires 'Coro';
 
 on 'test' => sub {
     requires 'Test::More' => '0.98';
