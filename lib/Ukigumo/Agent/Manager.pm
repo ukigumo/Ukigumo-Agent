@@ -7,6 +7,7 @@ use Ukigumo::Client::VC::Git;
 use Ukigumo::Client::Executor::Perl;
 use Coro;
 use Coro::AnyEvent;
+use POSIX qw/SIGTERM SIGKILL/;
 
 use Mouse;
 
@@ -18,11 +19,6 @@ has max_children => ( is => 'ro', default => 1 );
 has timeout => (is => 'rw', isa => 'Int', default => 0);
 
 no Mouse;
-
-my %Config = (
-    SIGKILL => 9,
-    SIGTERM => 15,
-);
 
 sub count_children {
     my $self = shift;
@@ -64,14 +60,14 @@ sub run_job {
                 undef $timeout_timer;
 
                 # Process has terminated because it was timeout
-                if ($status == $Config{SIGTERM}) {
+                if ($status == SIGTERM) {
                     if (kill 0, $pid) {
                         # Process is still alive
                         Coro::AnyEvent::sleep 5; # TODO enough?
-                        kill $Config{SIGTERM}, $pid;
+                        kill SIGTERM, $pid;
                         if (kill 0, $pid) {
                             # The last resort
-                            kill $Config{SIGKILL}, $pid;
+                            kill SIGKILL, $pid;
                         }
                     }
                     $client->report_timeout;
@@ -94,7 +90,7 @@ sub run_job {
         my $timeout = $self->timeout;
         if ($timeout > 0) {
             $timeout_timer = AE::timer $timeout, 0, sub {
-                kill $Config{SIGTERM}, $pid;
+                kill SIGTERM, $pid;
             };
         }
     } else {
