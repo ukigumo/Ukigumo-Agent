@@ -8,14 +8,31 @@ requires 'Ukigumo::Client' => '0.27';
 requires 'Data::Validator';
 requires 'Text::Xslate';
 requires 'Time::Duration';
-requires 'File::ShareDir';
-requires 'MRO::Compat';
 requires 'Mouse';
-requires 'Router::Boom';
 requires 'Log::Minimal';
 requires 'Coro';
+requires 'Getopt::Long' => '2.42';
+requires 'JSON' => '2';
+requires 'List::Util';
+requires 'Pod::Usage';
+requires 'autodie';
+requires 'version';
 
-on 'test' => sub {
-    requires 'Test::More' => '0.98';
+on configure => sub {
+    requires 'CPAN::Meta';
+    requires 'CPAN::Meta::Prereqs';
+    requires 'Module::Build';
 };
 
+on test => sub {
+    requires 'Test::More' => '0.98';
+    requires 'File::Temp';
+    requires 'LWP::UserAgent';
+    requires 'Plack::Loader';
+    requires 'Test::TCP';
+};
+
+on develop => sub {
+    requires 'Perl::Critic';
+    requires 'Test::Perl::Critic';
+};
