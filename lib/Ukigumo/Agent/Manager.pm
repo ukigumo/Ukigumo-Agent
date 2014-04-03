@@ -5,6 +5,9 @@ use utf8;
 use Ukigumo::Client;
 use Ukigumo::Client::VC::Git;
 use Ukigumo::Client::Executor::Perl;
+use Coro;
+use Coro::AnyEvent;
+use POSIX qw/SIGTERM SIGKILL/;
 
 use Mouse;
 
@@ -16,10 +19,6 @@ has max_children => ( is => 'ro', default => 1 );
 has timeout => (is => 'rw', isa => 'Int', default => 0);
 
 no Mouse;
-
-my %Config = (
-    SIGKILL => 9,
-);
 
 sub count_children {
     my $self = shift;
@@ -55,13 +54,23 @@ sub run_job {
     if ($pid) {
         print "Spawned $pid\n";
         $self->{children}->{$pid} = +{
-            child => AE::child($pid, sub {
+            child => AE::child($pid, unblock_sub {
                 my ($pid, $status) = @_;
 
                 undef $timeout_timer;
 
-                # Process has killed because it was timeout
-                if ($status == $Config{SIGKILL}) {
+                # Process has terminated because it was timeout
+                if ($status == SIGTERM) {
+                    Coro::AnyEvent::sleep 5;
+                    if (kill 0, $pid) {
+                        # Process is still alive
+                        kill SIGTERM, $pid;
+                        Coro::AnyEvent::sleep 5;
+                        if (kill 0, $pid) {
+                            # The last resort
+                            kill SIGKILL, $pid;
+                        }
+                    }
                     $client->report_timeout;
                     return;
                 }
@@ -82,7 +91,7 @@ sub run_job {
         my $timeout = $self->timeout;
         if ($timeout > 0) {
             $timeout_timer = AE::timer $timeout, 0, sub {
-                kill $Config{SIGKILL}, $pid;
+                kill SIGTERM, $pid;
             };
         }
     } else {
