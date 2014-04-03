@@ -63,8 +63,9 @@ sub run_job {
                 if ($status == SIGTERM) {
                     if (kill 0, $pid) {
                         # Process is still alive
-                        Coro::AnyEvent::sleep 5; # TODO enough?
+                        Coro::AnyEvent::sleep 5;
                         kill SIGTERM, $pid;
+                        Coro::AnyEvent::sleep 5;
                         if (kill 0, $pid) {
                             # The last resort
                             kill SIGKILL, $pid;
