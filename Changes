@@ -2,6 +2,10 @@ Revision history for Perl extension Ukigumo::Agent
 
 {{$NEXT}}
 
+v0.1.4 2014-04-08T06:55:19Z
+
+    - Update a dependency to Ukigumo::Client (bug fix)
+
 v0.1.3 2014-04-06T14:48:07Z
 
     - Update a dependency to Ukigumo::Client for function of timeout
