@@ -62,7 +62,12 @@ post '/api/github_hook' => sub {
             # To: git@github.com:tokuhirom/plenv.git
             $repo_url =~ s!\Ahttps?://([^/]+)/!git\@$1:!;
         }
-        (my $branch = $payload->{ref}) =~ s!\Arefs/heads/!!;
+
+        my $branch = $payload->{ref};
+        if ($branch) {
+            $branch =~ s!\Arefs/heads/!!;
+        }
+
         $args = +{
             repository       => $repo_url,
             branch           => $branch || $payload->{repository}->{master_branch},
