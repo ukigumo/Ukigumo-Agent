@@ -49,8 +49,6 @@ sub run_job {
 
     my $timeout_timer;
 
-    my $client;
-
     if ($pid) {
         print "Spawned $pid\n";
         $self->{children}->{$pid} = +{
@@ -71,6 +69,8 @@ sub run_job {
                             kill SIGKILL, $pid;
                         }
                     }
+
+                    my $client = $self->_build_client($branch, $repository, $args);
                     $client->report_timeout;
                     return;
                 }
@@ -96,19 +96,7 @@ sub run_job {
         }
     } else {
         eval {
-            my $vc = Ukigumo::Client::VC::Git->new(
-                branch => $branch,
-                repository => $repository,
-            );
-            $client = Ukigumo::Client->new(
-                workdir     => $self->work_dir,
-                vc          => $vc,
-                executor    => Ukigumo::Client::Executor::Perl->new(),
-                server_url  => $self->server_url,
-                compare_url => $args->{compare_url},
-                repository_owner => $args->{repository_owner},
-                repository_name  => $args->{repository_name},
-            );
+            my $client = $self->_build_client($branch, $repository, $args);
             $client->run();
         };
         print "[child] error: $@\n" if $@;
@@ -126,6 +114,25 @@ sub register_job {
     } else {
         $self->push_job($params);
     }
+}
+
+sub _build_client {
+    my ($self, $branch, $repository, $args) = @_;
+
+    my $vc = Ukigumo::Client::VC::Git->new(
+        branch     => $branch,
+        repository => $repository,
+    );
+
+    Ukigumo::Client->new(
+        workdir     => $self->work_dir,
+        vc          => $vc,
+        executor    => Ukigumo::Client::Executor::Perl->new(),
+        server_url  => $self->server_url,
+        compare_url => $args->{compare_url},
+        repository_owner => $args->{repository_owner},
+        repository_name  => $args->{repository_name},
+    );
 }
 
 1;
