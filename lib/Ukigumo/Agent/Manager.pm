@@ -72,7 +72,6 @@ sub run_job {
 
                     my $client = $self->_build_client($branch, $repository, $args);
                     $client->report_timeout;
-                    return;
                 }
 
                 print "[child exit] pid: $pid, status: $status\n";
