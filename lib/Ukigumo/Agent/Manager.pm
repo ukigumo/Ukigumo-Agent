@@ -47,6 +47,20 @@ sub run_job {
     my $repository = $args->{repository} || die;
     my $branch     = $args->{branch} || die;
 
+    my $vc = Ukigumo::Client::VC::Git->new(
+        branch     => $branch,
+        repository => $repository,
+    );
+    my $client = Ukigumo::Client->new(
+        workdir     => $self->work_dir,
+        vc          => $vc,
+        executor    => Ukigumo::Client::Executor::Perl->new(),
+        server_url  => $self->server_url,
+        compare_url => $args->{compare_url},
+        repository_owner => $args->{repository_owner},
+        repository_name  => $args->{repository_name},
+    );
+
     my $timeout_timer;
 
     if ($pid) {
@@ -69,9 +83,7 @@ sub run_job {
                             kill SIGKILL, $pid;
                         }
                     }
-
-                    my $client = $self->_build_client($branch, $repository, $args);
-                    $client->report_timeout;
+                    eval { $client->report_timeout() };
                 }
 
                 print "[child exit] pid: $pid, status: $status\n";
@@ -94,10 +106,7 @@ sub run_job {
             };
         }
     } else {
-        eval {
-            my $client = $self->_build_client($branch, $repository, $args);
-            $client->run();
-        };
+        eval { $client->run() };
         print "[child] error: $@\n" if $@;
         print "[child] finished to work\n";
         exit;
@@ -113,25 +122,6 @@ sub register_job {
     } else {
         $self->push_job($params);
     }
-}
-
-sub _build_client {
-    my ($self, $branch, $repository, $args) = @_;
-
-    my $vc = Ukigumo::Client::VC::Git->new(
-        branch     => $branch,
-        repository => $repository,
-    );
-
-    Ukigumo::Client->new(
-        workdir     => $self->work_dir,
-        vc          => $vc,
-        executor    => Ukigumo::Client::Executor::Perl->new(),
-        server_url  => $self->server_url,
-        compare_url => $args->{compare_url},
-        repository_owner => $args->{repository_owner},
-        repository_name  => $args->{repository_name},
-    );
 }
 
 1;
