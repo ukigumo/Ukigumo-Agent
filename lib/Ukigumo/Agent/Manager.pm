@@ -39,11 +39,6 @@ sub run_job {
     my ($self, $args) = @_;
     Carp::croak "Missing args" unless $args;
 
-    my $pid = fork();
-    if (!defined $pid) {
-        die "Cannot fork: $!";
-    }
-
     my $repository = $args->{repository} || die;
     my $branch     = $args->{branch} || die;
 
@@ -62,6 +57,11 @@ sub run_job {
     );
 
     my $timeout_timer;
+
+    my $pid = fork();
+    if (!defined $pid) {
+        die "Cannot fork: $!";
+    }
 
     if ($pid) {
         print "Spawned $pid\n";
