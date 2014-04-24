@@ -69,6 +69,7 @@
       },
       "test" : {
          "requires" : {
+            "Capture::Tiny" : "0",
             "File::Temp" : "0",
             "LWP::UserAgent" : "0",
             "Plack::Loader" : "0",
