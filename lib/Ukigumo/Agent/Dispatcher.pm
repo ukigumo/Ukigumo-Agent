@@ -7,7 +7,6 @@ use Amon2::Web::Dispatcher::RouterBoom;
 use Ukigumo::Agent::Manager;
 use Data::Validator;
 use JSON;
-use Log::Minimal;
 
 get '/' => sub {
     my $c = shift;
@@ -48,7 +47,7 @@ post '/api/v0/enqueue' => sub {
 post '/api/github_hook' => sub {
     my $c = shift;
 
-    infof("playload: %s", $c->req->param('payload'));
+    $c->logger->infof("playload: %s", $c->req->param('payload'));
     my $payload = from_json $c->req->param('payload');
     my $args;
     eval {
@@ -77,7 +76,7 @@ post '/api/github_hook' => sub {
         };
     };
     if (my $e = $@) {
-        warnf("An error occured: %s", $e);
+        $c->logger->warnf("An error occured: %s", $e);
         my $res = $c->render_json({errors => $e});
         $res->code(400);
         return $res;

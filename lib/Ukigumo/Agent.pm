@@ -8,6 +8,7 @@ use parent qw(Amon2 Amon2::Web);
 sub config { +{ } }
 
 use Ukigumo::Agent::Dispatcher;
+use Ukigumo::Agent::Logger;
 
 __PACKAGE__->load_plugins(qw(Web::JSON ShareDir));
 
@@ -26,6 +27,11 @@ sub dispatch {
     my $_manager;
     sub register_manager { $_manager = $_[1] }
     sub manager { $_manager || die "Missing manager" }
+}
+
+{
+    my $_logger = Ukigumo::Agent::Logger->new;
+    sub logger { $_logger }
 }
 
 1;
