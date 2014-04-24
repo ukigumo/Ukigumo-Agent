@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ukigumo/Ukigumo-Agent.png?branch=master)](https://travis-ci.org/ukigumo/Ukigumo-Agent) [![Coverage Status](https://coveralls.io/repos/ukigumo/Ukigumo-Agent/badge.png?branch=master)](https://coveralls.io/r/ukigumo/Ukigumo-Agent?branch=master)
+[![Build Status](https://travis-ci.org/ukigumo/Ukigumo-Agent.png?branch=master)](https://travis-ci.org/ukigumo/Ukigumo-Agent)
 # NAME
 
 Ukigumo::Agent - Ukigumo test runner server
