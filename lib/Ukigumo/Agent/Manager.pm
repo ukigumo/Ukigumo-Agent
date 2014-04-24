@@ -5,9 +5,11 @@ use utf8;
 use Ukigumo::Client;
 use Ukigumo::Client::VC::Git;
 use Ukigumo::Client::Executor::Perl;
+use Ukigumo::Agent::Logger;
 use Coro;
 use Coro::AnyEvent;
 use POSIX qw/SIGTERM SIGKILL/;
+use Log::Minimal;
 
 use Mouse;
 
@@ -17,6 +19,13 @@ has 'server_url' => ( is => 'rw', isa => 'Str', required => 1 );
 has job_queue => (is => 'ro', default => sub { +[ ] });
 has max_children => ( is => 'ro', default => 1 );
 has timeout => (is => 'rw', isa => 'Int', default => 0);
+has logger => (
+    is      => 'ro',
+    isa     => 'Ukigumo::Agent::Logger',
+    default => sub {
+        Ukigumo::Agent::Logger->new
+    },
+);
 
 no Mouse;
 
@@ -64,7 +73,7 @@ sub run_job {
     }
 
     if ($pid) {
-        print "Spawned $pid\n";
+        $self->logger->infof("Spawned $pid");
         $self->{children}->{$pid} = +{
             child => AE::child($pid, unblock_sub {
                 my ($pid, $status) = @_;
@@ -83,17 +92,18 @@ sub run_job {
                             kill SIGKILL, $pid;
                         }
                     }
+                    $self->logger->warnf("[child] timeout");
                     eval { $client->report_timeout() };
                 }
 
-                print "[child exit] pid: $pid, status: $status\n";
+                $self->logger->infof("[child exit] pid: $pid, status: $status");
                 delete $self->{children}->{$pid};
 
                 if ($self->count_children < $self->max_children && @{$self->job_queue} > 0) {
-                    print "[child exit] run new job\n";
+                    $self->logger->infof("[child exit] run new job");
                     $self->run_job($self->pop_job);
                 } else {
-                    print "[child exit] There is no jobs. sleep...\n";
+                    $self->_take_a_break();
                 }
             }),
             job => $args,
@@ -107,8 +117,8 @@ sub run_job {
         }
     } else {
         eval { $client->run() };
-        print "[child] error: $@\n" if $@;
-        print "[child] finished to work\n";
+        $self->logger->warnf("[child] error: $@") if $@;
+        $self->logger->infof("[child] finished to work");
         exit;
     }
 }
@@ -122,6 +132,11 @@ sub register_job {
     } else {
         $self->push_job($params);
     }
+}
+
+sub _take_a_break {
+    my ($self) = @_;
+    $self->logger->infof("[child exit] There is no jobs. sleep...");
 }
 
 1;
