@@ -30,6 +30,7 @@ on test => sub {
     requires 'LWP::UserAgent';
     requires 'Plack::Loader';
     requires 'Test::TCP';
+    requires 'Capture::Tiny';
 };
 
 on develop => sub {
