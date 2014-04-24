@@ -76,8 +76,8 @@ subtest 'timeout' => sub {
         \[child]\ timeout\n
         \[child\ exit]\ pid:\ \1,\ status:\ 15\n
         \[child\ exit]\ run\ new\ job\n
-        Spawned\ (\d+)\n
-        \[child]\ finished\ to\ work\n
+        (?:Spawned\ (\d+)\n|\[child]\ finished\ to\ work\n)
+        (?:Spawned\ (\d+)\n|\[child]\ finished\ to\ work\n)
         \[child\ exit]\ pid:\ \2,\ status:\ 0\n
         \[child\ exit]\ There\ is\ no\ jobs\.\ sleep\.\.\.\n
     /x;
