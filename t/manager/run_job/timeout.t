@@ -17,7 +17,9 @@ my $cv;
 my $tmpfilename = '';
 
 *Ukigumo::Client::new = sub {
-    bless {}, 'Ukigumo::Client';
+    bless {
+        logfh => File::Temp->new(UNLINK => 1)
+    }, 'Ukigumo::Client';
 };
 
 my $original_agent__take_a_break = *Ukigumo::Agent::Manager::_take_a_break{CODE};
