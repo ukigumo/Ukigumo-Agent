@@ -1,0 +1,4 @@
+before_install:
+  - "cpanm -L $HOME/.ukigumo/ukigumo-agent --installdeps -n ."
+install: "ln -s $HOME/.ukigumo/ukigumo-agent/local ./local"
+script: prove -lrv t
