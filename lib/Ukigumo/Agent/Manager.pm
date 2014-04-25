@@ -65,6 +65,8 @@ sub run_job {
         repository_name  => $args->{repository_name},
     );
 
+    my $client_log_filename = $client->logfh->filename;
+
     my $timeout_timer;
 
     my $pid = fork();
@@ -93,7 +95,7 @@ sub run_job {
                         }
                     }
                     $self->logger->warnf("[child] timeout");
-                    eval { $client->report_timeout() };
+                    eval { $client->report_timeout($client_log_filename) };
                 }
 
                 $self->logger->infof("[child exit] pid: $pid, status: $status");
