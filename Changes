@@ -2,6 +2,11 @@ Revision history for Perl extension Ukigumo::Agent
 
 {{$NEXT}}
 
+v0.1.5 2014-05-01T04:33:14Z
+
+    - Suppress warning messages
+    - Fix handling of timeout
+
 v0.1.4 2014-04-08T06:55:19Z
 
     - Update a dependency to Ukigumo::Client (bug fix)
