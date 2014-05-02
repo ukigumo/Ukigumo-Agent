@@ -116,7 +116,7 @@ subtest 'normal case' => sub {
         $cv->wait;
 
         my $got = do { local $/; <$fh>; }; # TODO remove
-        like $got, qr/
+        like $got, qr/(?:
             Spawned\ (\d+)\n
             Spawned\ (\d+)\n
             \[child]\ finished\ to\ work\n
@@ -129,7 +129,20 @@ subtest 'normal case' => sub {
             \[child]\ finished\ to\ work\n
             \[child\ exit]\ pid:\ \3,\ status:\ 0\n
             \[child\ exit]\ There\ is\ no\ jobs\.\ sleep\.\.\.\n
-        /x;
+            |
+            Spawned\ (\d+)\n
+            Spawned\ (\d+)\n
+            \[child]\ finished\ to\ work\n
+            \[child\ exit]\ pid:\ (?:\4|\5),\ status:\ 0\n
+            \[child\ exit]\ run\ new\ job\n
+            Spawned\ (\d+)\n
+            \[child]\ finished\ to\ work\n
+            \[child\ exit]\ pid:\ (?:\4|\5),\ status:\ 0\n
+            \[child\ exit]\ There\ is\ no\ jobs\.\ sleep\.\.\.\n
+            \[child]\ finished\ to\ work\n
+            \[child\ exit]\ pid:\ \6,\ status:\ 0\n
+            \[child\ exit]\ There\ is\ no\ jobs\.\ sleep\.\.\.\n
+        )/x;
 
         close $fh;
         ok 1;
