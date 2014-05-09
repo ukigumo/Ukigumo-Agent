@@ -62,18 +62,27 @@ post '/api/github_hook' => sub {
             $repo_url =~ s!\Ahttps?://([^/]+)/!git\@$1:!;
         }
 
-        my $branch = $payload->{ref};
-        if ($branch) {
-            $branch =~ s!\Arefs/heads/!!;
+        my $ref = $payload->{ref}
+        die "ref is not in the payload" unless $ref;
+
+        my $tag;
+        my $branch;
+        if ($ref =~ s!\Arefs/heads/!!) {
+            $branch = $ref;
+        }
+        elsif ($ref =~ s!\Arefs/tags/!!) {
+            $tag = $ref;
         }
 
-        $args = +{
-            repository       => $repo_url,
-            branch           => $branch || $payload->{repository}->{master_branch},
-            compare_url      => $payload->{compare} || '',
-            repository_owner => $payload->{repository}->{owner}->{name} || '',
-            repository_name  => $payload->{repository}->{name} || '',
-        };
+        if ($branch || $tag) {
+            $args = +{
+                repository       => $repo_url,
+                branch           => $branch || $tag,
+                compare_url      => $payload->{compare} || '',
+                repository_owner => $payload->{repository}->{owner}->{name} || '',
+                repository_name  => $payload->{repository}->{name} || '',
+            };
+        }
     };
     if (my $e = $@) {
         $c->logger->warnf("An error occured: %s", $e);
@@ -88,3 +97,4 @@ post '/api/github_hook' => sub {
 };
 
 1;
+
