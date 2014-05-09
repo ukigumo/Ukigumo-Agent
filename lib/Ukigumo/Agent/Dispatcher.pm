@@ -19,6 +19,7 @@ get '/' => sub {
             work_dir     => $c->manager->work_dir,
             max_children => $c->manager->max_children,
             timeout      => $c->manager->timeout,
+            ignore_github_tags => $c->manager->ignore_github_tags,
         }
     );
 };
@@ -62,7 +63,7 @@ post '/api/github_hook' => sub {
             $repo_url =~ s!\Ahttps?://([^/]+)/!git\@$1:!;
         }
 
-        my $ref = $payload->{ref}
+        my $ref = $payload->{ref};
         die "ref is not in the payload" unless $ref;
 
         my $tag;
@@ -72,6 +73,10 @@ post '/api/github_hook' => sub {
         }
         elsif ($ref =~ s!\Arefs/tags/!!) {
             $tag = $ref;
+        }
+
+        if ($c->manager->ignore_github_tags) {
+            $tag = '';
         }
 
         if ($branch || $tag) {
@@ -91,9 +96,11 @@ post '/api/github_hook' => sub {
         return $res;
     }
 
-    $c->manager->register_job($args);
+    if ($args) {
+        $c->manager->register_job($args);
+    }
 
-    return $c->render_json(+{});
+    return $c->render_json($args || +{});
 };
 
 1;

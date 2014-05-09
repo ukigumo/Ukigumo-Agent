@@ -13,12 +13,13 @@ use Log::Minimal;
 
 use Mouse;
 
-has 'children' => ( is => 'rw', default => sub { +{ } } );
-has 'work_dir' => ( is => 'rw', isa => 'Str', required => 1 );
-has 'server_url' => ( is => 'rw', isa => 'Str', required => 1 );
-has job_queue => (is => 'ro', default => sub { +[ ] });
-has max_children => ( is => 'ro', default => 1 );
-has timeout => (is => 'rw', isa => 'Int', default => 0);
+has 'children'   => (is => 'rw', default => sub { +{ } });
+has 'work_dir'   => (is => 'rw', isa => 'Str', required => 1);
+has 'server_url' => (is => 'rw', isa => 'Str', required => 1);
+has job_queue    => (is => 'ro', default => sub { +[ ] });
+has max_children => (is => 'ro', default => 1);
+has timeout      => (is => 'rw', isa => 'Int', default => 0);
+has ignore_github_tags => (is => 'ro', isa => 'Bool', default => 0);
 has logger => (
     is      => 'ro',
     isa     => 'Ukigumo::Agent::Logger',

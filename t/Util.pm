@@ -7,6 +7,8 @@ use File::Temp qw(tempdir);
 use Test::TCP;
 
 sub build_ukigumo_agent {
+    my (@opt) = @_;
+
     my $server = Test::TCP->new(
         code => sub {
             my ($port) = @_;
@@ -24,7 +26,7 @@ sub build_ukigumo_agent {
         code => sub {
             my ($port) = @_;
             my $work_dir = tempdir();
-            @ARGV = ('--host=127.0.0.1', "--port=$port", "--work_dir=$work_dir", "--server_url=http://127.0.0.1:@{[ $server->port ]}/");
+            @ARGV = ('--host=127.0.0.1', "--port=$port", "--work_dir=$work_dir", "--server_url=http://127.0.0.1:@{[ $server->port ]}/", "@opt");
             do 'script/ukigumo-agent';
             exit 0;
         },
