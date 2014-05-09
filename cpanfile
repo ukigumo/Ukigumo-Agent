@@ -4,7 +4,7 @@ requires 'Plack' => '0.9949';
 requires 'Twiggy';
 requires 'Amon2' => 6.00;
 requires 'Amon2::Plugin::ShareDir';
-requires 'Ukigumo::Client' => '0.30';
+requires 'Ukigumo::Client' => '0.31';
 requires 'Data::Validator';
 requires 'Text::Xslate';
 requires 'Time::Duration';
@@ -19,9 +19,7 @@ requires 'autodie';
 requires 'version';
 
 on configure => sub {
-    requires 'CPAN::Meta';
-    requires 'CPAN::Meta::Prereqs';
-    requires 'Module::Build';
+    requires 'Module::Build::Tiny' => '0.035';
 };
 
 on test => sub {
