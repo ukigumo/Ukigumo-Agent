@@ -59,6 +59,7 @@
                         <tr><th>Max children</th><td>[% max_children %]</td></tr>
                         <tr><th>Work dir</th><td>[% work_dir %]</td></tr>
                         <tr><th>Timeout</th><td>[% IF timeout > 0 %][% timeout %]sec[% ELSE %]Not timeout[% END %]</td></tr>
+                        <tr><th>Ignore GitHub Tags</th><td>[% IF ignore_github_tags == 0 %]False[% ELSE %]True[% END %]</td></tr>
                     </table>
                 </section>
 
