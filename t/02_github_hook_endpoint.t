@@ -15,7 +15,7 @@ my $ua = LWP::UserAgent->new(timeout => 3);
 subtest "Don't ignore github tags" => sub {
     my $agent = t::Util::build_ukigumo_agent();
 
-    subtest 'push branch' => sub {
+    subtest 'push branch and successful' => sub {
         my $res = $ua->post(
             "http://127.0.0.1:@{[ $agent->port ]}/api/github_hook",
             +{
@@ -31,7 +31,7 @@ subtest "Don't ignore github tags" => sub {
         is decode_json($res->content)->{branch}, 'branch';
     };
 
-    subtest 'push tag' => sub {
+    subtest 'push tag and successful' => sub {
         my $res = $ua->post(
             "http://127.0.0.1:@{[ $agent->port ]}/api/github_hook",
             +{
@@ -48,24 +48,58 @@ subtest "Don't ignore github tags" => sub {
     };
 };
 
-subtest 'ignore github tags' => sub {
+subtest 'push tag but do nothing when github tags are ignored' => sub {
     my $agent = t::Util::build_ukigumo_agent('--ignore_github_tags');
 
-    subtest 'push tag but do nothing' => sub {
-        my $res = $ua->post(
-            "http://127.0.0.1:@{[ $agent->port ]}/api/github_hook",
-            +{
-                payload => encode_json({
-                    repository => {
-                        url => '127.0.0.1/repos',
-                    },
-                    ref => 'refs/tags/tag',
-                }),
-            },
-        );
-        is $res->code, 200;
-        is_deeply decode_json($res->content), {};
-    };
+    my $res = $ua->post(
+        "http://127.0.0.1:@{[ $agent->port ]}/api/github_hook",
+        +{
+            payload => encode_json({
+                repository => {
+                    url => '127.0.0.1/repos',
+                },
+                ref => 'refs/tags/tag',
+            }),
+        },
+    );
+    is $res->code, 200;
+    is_deeply decode_json($res->content), {};
+};
+
+subtest 'do nothing when ref is not in the payload' => sub {
+    my $agent = t::Util::build_ukigumo_agent();
+
+    my $res = $ua->post(
+        "http://127.0.0.1:@{[ $agent->port ]}/api/github_hook",
+        +{
+            payload => encode_json({
+                repository => {
+                    url => '127.0.0.1/repos',
+                },
+            }),
+        },
+    );
+    is $res->code, 200;
+    is_deeply decode_json($res->content), {};
+};
+
+subtest 'do nothing when `deleted` is true' => sub {
+    my $agent = t::Util::build_ukigumo_agent();
+
+    my $res = $ua->post(
+        "http://127.0.0.1:@{[ $agent->port ]}/api/github_hook",
+        +{
+            payload => encode_json({
+                repository => {
+                    url => '127.0.0.1/repos',
+                },
+                ref => 'refs/heads/branch',
+                deleted => 1,
+            }),
+        },
+    );
+    is $res->code, 200;
+    is_deeply decode_json($res->content), {};
 };
 
 done_testing;

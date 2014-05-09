@@ -51,55 +51,49 @@ post '/api/github_hook' => sub {
     $c->logger->infof("playload: %s", $c->req->param('payload'));
     my $payload = from_json $c->req->param('payload');
     my $args;
-    eval {
-        # TODO How to pass commit id?
-        # my @commits = @{$payload->{commits}};
-        #   ...
-        # commit => $commits[$#commits]->{id},
-        my $repo_url = $payload->{repository}->{url};
-        if ($ENV{UKIGUMO_AGENT_GITHUB_HOOK_FORCE_GIT_URL}) {
-            # From: https://github.com/tokuhirom/plenv.git
-            # To: git@github.com:tokuhirom/plenv.git
-            $repo_url =~ s!\Ahttps?://([^/]+)/!git\@$1:!;
+    if (!$payload->{deleted} and my $ref = $payload->{ref}) {
+        eval {
+            # TODO How to pass commit id?
+            # my @commits = @{$payload->{commits}};
+            #   ...
+            # commit => $commits[$#commits]->{id},
+            my $repo_url = $payload->{repository}->{url};
+            if ($ENV{UKIGUMO_AGENT_GITHUB_HOOK_FORCE_GIT_URL}) {
+                # From: https://github.com/tokuhirom/plenv.git
+                # To: git@github.com:tokuhirom/plenv.git
+                $repo_url =~ s!\Ahttps?://([^/]+)/!git\@$1:!;
+            }
+
+            my $tag;
+            my $branch;
+            if ($ref =~ s!\Arefs/heads/!!) {
+                $branch = $ref;
+            }
+            elsif ($ref =~ s!\Arefs/tags/!! && !$c->manager->ignore_github_tags) {
+                $tag = $ref;
+            }
+
+            if ($branch || $tag) {
+                $args = +{
+                    repository       => $repo_url,
+                    branch           => $branch || $tag,
+                    compare_url      => $payload->{compare} || '',
+                    repository_owner => $payload->{repository}->{owner}->{name} || '',
+                    repository_name  => $payload->{repository}->{name} || '',
+                };
+            }
+        };
+        if (my $e = $@) {
+            $c->logger->warnf("An error occured: %s", $e);
+            my $res = $c->render_json({errors => $e});
+            $res->code(400);
+            return $res;
         }
 
-        my $ref = $payload->{ref};
-        die "ref is not in the payload" unless $ref;
-
-        my $tag;
-        my $branch;
-        if ($ref =~ s!\Arefs/heads/!!) {
-            $branch = $ref;
+        if ($args) {
+            $c->manager->register_job($args);
         }
-        elsif ($ref =~ s!\Arefs/tags/!!) {
-            $tag = $ref;
-        }
-
-        if ($c->manager->ignore_github_tags) {
-            $tag = '';
-        }
-
-        if ($branch || $tag) {
-            $args = +{
-                repository       => $repo_url,
-                branch           => $branch || $tag,
-                compare_url      => $payload->{compare} || '',
-                repository_owner => $payload->{repository}->{owner}->{name} || '',
-                repository_name  => $payload->{repository}->{name} || '',
-            };
-        }
-    };
-    if (my $e = $@) {
-        $c->logger->warnf("An error occured: %s", $e);
-        my $res = $c->render_json({errors => $e});
-        $res->code(400);
-        return $res;
     }
-
-    if ($args) {
-        $c->manager->register_job($args);
-    }
-
     return $c->render_json($args || +{});
 };
 
