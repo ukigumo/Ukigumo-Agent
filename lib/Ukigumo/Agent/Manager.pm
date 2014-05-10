@@ -5,7 +5,7 @@ use utf8;
 use Ukigumo::Client;
 use Ukigumo::Client::VC::Git;
 use Ukigumo::Client::Executor::Perl;
-use Ukigumo::Agent::Logger;
+use Ukigumo::Logger;
 use Coro;
 use Coro::AnyEvent;
 use POSIX qw/SIGTERM SIGKILL/;
@@ -22,9 +22,9 @@ has timeout      => (is => 'rw', isa => 'Int', default => 0);
 has ignore_github_tags => (is => 'ro', isa => 'Bool', default => 0);
 has logger => (
     is      => 'ro',
-    isa     => 'Ukigumo::Agent::Logger',
+    isa     => 'Ukigumo::Logger',
     default => sub {
-        Ukigumo::Agent::Logger->new
+        Ukigumo::Logger->new
     },
 );
 

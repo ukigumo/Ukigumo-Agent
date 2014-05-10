@@ -8,7 +8,7 @@ use AnyEvent;
 use Coro::AnyEvent;
 use File::Temp qw/tempdir tempfile/;
 use Ukigumo::Client;
-use Ukigumo::Agent::Logger;
+use Ukigumo::Logger;
 use Ukigumo::Agent;
 
 use Test::More;
@@ -30,13 +30,13 @@ my $original_agent__take_a_break = *Ukigumo::Agent::Manager::_take_a_break{CODE}
     $cv->send;
 };
 
-*Ukigumo::Agent::Logger::infof = sub {
+*Ukigumo::Logger::infof = sub {
     my ($self, @info) = @_;
     open my $fh, '>>', $tmpfilename;
     print $fh "@info" . "\n";
 };
 
-*Ukigumo::Agent::Logger::warnf = sub {
+*Ukigumo::Logger::warnf = sub {
     my ($self, @warn) = @_;
     open my $fh, '>>', $tmpfilename;
     print $fh "@warn" . "\n";
