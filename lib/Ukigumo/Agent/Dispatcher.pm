@@ -48,7 +48,7 @@ post '/api/v0/enqueue' => sub {
 post '/api/github_hook' => sub {
     my $c = shift;
 
-    $c->logger->infof("playload: %s", $c->req->param('payload'));
+    $c->logger->infof("payload: %s", $c->req->param('payload'));
     my $payload = from_json $c->req->param('payload');
     my $args;
     if (!$payload->{deleted} and my $ref = $payload->{ref}) {
