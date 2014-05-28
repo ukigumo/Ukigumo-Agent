@@ -9,23 +9,69 @@ use Ukigumo::Logger;
 use Coro;
 use Coro::AnyEvent;
 use POSIX qw/SIGTERM SIGKILL/;
-use Log::Minimal;
+use File::Spec;
+use Carp ();
 
 use Mouse;
 
-has 'children'   => (is => 'rw', default => sub { +{ } });
-has 'work_dir'   => (is => 'rw', isa => 'Str', required => 1);
-has 'server_url' => (is => 'rw', isa => 'Str', required => 1);
-has job_queue    => (is => 'ro', default => sub { +[ ] });
-has max_children => (is => 'ro', default => 1);
-has timeout      => (is => 'rw', isa => 'Int', default => 0);
-has ignore_github_tags => (is => 'ro', isa => 'Bool', default => 0);
-has logger => (
+has 'config' => (
+    is       => 'rw',
+    isa      => 'HashRef',
+    required => 1,
+);
+
+has 'work_dir' => (
+    is      => 'ro',
+    isa     => 'Str',
+    lazy    => 1,
+    default => sub { shift->config->{work_dir} // File::Spec->tmpdir },
+);
+
+has 'server_url' => (
+    is      => 'ro',
+    isa     => 'Str',
+    lazy    => 1,
+    default => sub { shift->config->{server_url} },
+);
+
+has 'timeout' => (
+    is      => 'ro',
+    isa     => 'Int',
+    lazy    => 1,
+    default => sub { shift->config->{timeout} // 0 },
+);
+
+has 'ignore_github_tags' => (
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub { shift->config->{ignore_github_tags} // 0 },
+);
+
+has 'max_children' => (
+    is      => 'ro',
+    isa     => 'Int',
+    lazy    => 1,
+    default => sub { shift->config->{max_children} // 1 },
+);
+
+has 'job_queue' => (
+    is      => 'ro',
+    isa     => 'ArrayRef',
+    default => sub { +[] },
+);
+
+has 'children' => (
+    is      => 'rw',
+    isa     => 'HashRef',
+    default => sub { +{} },
+);
+
+has 'logger' => (
     is      => 'ro',
     isa     => 'Ukigumo::Logger',
-    default => sub {
-        Ukigumo::Logger->new
-    },
+    lazy    => 1,
+    default => sub { Ukigumo::Logger->new },
 );
 
 no Mouse;
@@ -47,7 +93,7 @@ sub pop_job {
 
 sub run_job {
     my ($self, $args) = @_;
-    Carp::croak "Missing args" unless $args;
+    Carp::croak("Missing args") unless $args;
 
     my $repository = $args->{repository} || die;
     my $branch     = $args->{branch} || die;
@@ -143,4 +189,3 @@ sub _take_a_break {
 }
 
 1;
-
