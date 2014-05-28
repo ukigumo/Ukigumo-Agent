@@ -48,6 +48,13 @@ has 'ignore_github_tags' => (
     default => sub { shift->config->{ignore_github_tags} // 0 },
 );
 
+has 'force_git_url' => (
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub { shift->config->{force_git_url} // 0 },
+);
+
 has 'max_children' => (
     is      => 'ro',
     isa     => 'Int',
