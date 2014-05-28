@@ -13,7 +13,6 @@ use Ukigumo::Agent::Manager;
 use Ukigumo::Agent;
 use Getopt::Long;
 use Pod::Usage;
-use List::Util qw(first);
 use File::Spec;
 use Plack::App::File;
 
