@@ -57,7 +57,7 @@ my $app = builder {
 my $twiggy = Twiggy::Server->new(host => $host, port => $port);
 $twiggy->register_service($app);
 
-print "http://${host}:${port}/\n";
+print "Twiggy: Accepting connections at http://${host}:${port}/\n";
 
 AE::cv->recv;
 __END__
