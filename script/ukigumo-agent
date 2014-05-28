@@ -21,20 +21,20 @@ $|++;
 my $port = 1984;
 my $host = '127.0.0.1';
 GetOptions(
-    'work_dir=s'   => \my $work_dir,
-    'server_url=s' => \my $server_url,
-    'h|host=s'     => \$host,
-    'p|port=i'     => \$port,
-    'timeout=i'    => \my $timeout,
+    'work_dir=s'         => \my $work_dir,
+    'server_url=s'       => \my $server_url,
+    'h|host=s'           => \$host,
+    'p|port=i'           => \$port,
+    'timeout=i'          => \my $timeout,
     'ignore_github_tags' => \my $ignore_github_tags,
 );
 $work_dir or pod2usage();
 $server_url or pod2usage();
 
 my $manager = Ukigumo::Agent::Manager->new(
-    work_dir   => $work_dir,
-    server_url => $server_url,
-    timeout    => $timeout || 0,
+    work_dir           => $work_dir,
+    server_url         => $server_url,
+    timeout            => $timeout || 0,
     ignore_github_tags => $ignore_github_tags || 0,
 );
 Ukigumo::Agent->register_manager($manager);
