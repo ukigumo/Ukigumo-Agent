@@ -43,10 +43,11 @@ my $original_agent__take_a_break = *Ukigumo::Agent::Manager::_take_a_break{CODE}
 };
 
 subtest 'exceptional' => sub {
-    my $manager = Ukigumo::Agent::Manager->new(
+    my $config = {
         work_dir     => tempdir(CLEANUP => 1),
         server_url   => '127.0.0.1',
-    );
+    };
+    my $manager = Ukigumo::Agent::Manager->new(config => $config);
 
     subtest 'client died' => sub {
         *Ukigumo::Client::run = sub { die };

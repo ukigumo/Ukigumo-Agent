@@ -22,11 +22,12 @@ subtest 'register_job' => sub {
     };
 
     subtest 'single child' => sub {
-        my $manager = Ukigumo::Agent::Manager->new(
+        my $config = {
             work_dir     => tempdir(CLEANUP => 1),
             server_url   => '127.0.0.1',
             max_children => 1,
-        );
+        };
+        my $manager = Ukigumo::Agent::Manager->new(config => $config);
 
         is $manager->register_job('foo'), 'running';
         is $manager->register_job('bar'), 'pushed';
@@ -36,11 +37,12 @@ subtest 'register_job' => sub {
     };
 
     subtest 'multi children' => sub {
-        my $manager = Ukigumo::Agent::Manager->new(
+        my $config = {
             work_dir     => tempdir(CLEANUP => 1),
             server_url   => '127.0.0.1',
             max_children => 3,
-        );
+        };
+        my $manager = Ukigumo::Agent::Manager->new(config => $config);
 
         is $manager->register_job('foo'), 'running';
         is $manager->register_job('bar'), 'running';
