@@ -1,7 +1,7 @@
 package Ukigumo::Agent;
 use strict;
 use warnings;
-use 5.008005;
+use 5.010001;
 use version; our $VERSION = version->declare("v0.1.6");
 use parent qw(Amon2 Amon2::Web);
 use Carp ();
