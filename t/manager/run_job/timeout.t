@@ -48,12 +48,13 @@ subtest 'timeout' => sub {
 
     *Ukigumo::Client::run = sub { sleep 10 };
 
-    my $manager = Ukigumo::Agent::Manager->new(
+    my $config = {
         work_dir     => tempdir(CLEANUP => 1),
         server_url   => '127.0.0.1',
         max_children => 1,
         timeout      => 1,
-    );
+    };
+    my $manager = Ukigumo::Agent::Manager->new(config => $config);
 
     $cv = AE::cv;
 
