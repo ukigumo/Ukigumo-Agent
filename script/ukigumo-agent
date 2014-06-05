@@ -9,53 +9,55 @@ use lib "$FindBin::Bin/../lib";
 
 use Twiggy::Server;
 use Plack::Builder;
-use Ukigumo::Agent::Manager;
+use Plack::App::File;
 use Ukigumo::Agent;
+use Ukigumo::Agent::Manager;
 use Getopt::Long;
 use Pod::Usage;
-use List::Util qw(first);
 use File::Spec;
-use Plack::App::File;
 
 $|++;
 
+my $host = '0.0.0.0';
 my $port = 1984;
-my $host = '127.0.0.1';
+
 GetOptions(
-    'work_dir=s'   => \my $work_dir,
-    'server_url=s' => \my $server_url,
-    'h|host=s'     => \$host,
-    'p|port=i'     => \$port,
-    'timeout=i'    => \my $timeout,
+    'c|config=s'         => \my $file,
+
+    'h|host=s'           => \$host,
+    'p|port=i'           => \$port,
+
+    'work_dir=s'         => \my $work_dir,
+    'server_url=s'       => \my $server_url,
+    'timeout=i'          => \my $timeout,
     'ignore_github_tags' => \my $ignore_github_tags,
 );
-$work_dir or pod2usage();
-$server_url or pod2usage();
 
-my $manager = Ukigumo::Agent::Manager->new(
-    work_dir   => $work_dir,
-    server_url => $server_url,
-    timeout    => $timeout || 0,
-    ignore_github_tags => $ignore_github_tags || 0,
-);
+my $config = ($file && -f $file) ? Ukigumo::Agent->load_config($file) : +{};
+
+$config->{work_dir}           = $work_dir           if defined $work_dir;
+$config->{server_url}         = $server_url         if defined $server_url;
+$config->{timeout}            = $timeout            if defined $timeout;
+$config->{ignore_github_tags} = $ignore_github_tags if defined $ignore_github_tags;
+
+pod2usage() unless $config->{work_dir};
+pod2usage() unless $config->{server_url};
+
+my $manager = Ukigumo::Agent::Manager->new(config => $config);
 Ukigumo::Agent->register_manager($manager);
 
+my $static_dir = File::Spec->catdir(Ukigumo::Agent->share_dir, 'static');
 my $app = builder {
     enable 'AccessLog';
 
-    mount '/static/' => Plack::App::File->new(
-        {root => File::Spec->catdir(Ukigumo::Agent->share_dir, 'static')}
-    )->to_app;
-    mount '/' => Ukigumo::Agent->to_app();
+    mount '/'        => Ukigumo::Agent->to_app;
+    mount '/static/' => Plack::App::File->new({ root => $static_dir })->to_app;
 };
 
-my $twiggy = Twiggy::Server->new(
-    host => $host,
-    port => $port,
-);
+my $twiggy = Twiggy::Server->new(host => $host, port => $port);
 $twiggy->register_service($app);
 
-print "http://${host}:${port}/\n";
+print "Twiggy: Accepting connections at http://${host}:${port}/\n";
 
 AE::cv->recv;
 __END__
@@ -68,6 +70,7 @@ ukigumo-agent.pl - CI agent server
 
     % ukigumo-agent.pl --server_url=http://example.com/
 
+        --config=config.pl               Configuration file
         --server_url=http://example.com  ukigumo-server URL
         --work_dir=/tmp/                 working directory
         --host=127.0.0.1                 Bind host
