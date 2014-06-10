@@ -17,7 +17,8 @@ use Mouse;
 has 'config' => (
     is       => 'rw',
     isa      => 'HashRef',
-    required => 1,
+    lazy     => 1,
+    default  => sub { +{} },
 );
 
 has 'work_dir' => (
