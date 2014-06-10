@@ -31,6 +31,7 @@ GetOptions(
     'server_url=s'       => \my $server_url,
     'timeout=i'          => \my $timeout,
     'ignore_github_tags' => \my $ignore_github_tags,
+    'force_git_url'      => \my $force_git_url,
 );
 
 my $config = ($file && -f $file) ? Ukigumo::Agent->load_config($file) : +{};
@@ -39,6 +40,7 @@ $config->{work_dir}           = $work_dir           if defined $work_dir;
 $config->{server_url}         = $server_url         if defined $server_url;
 $config->{timeout}            = $timeout            if defined $timeout;
 $config->{ignore_github_tags} = $ignore_github_tags if defined $ignore_github_tags;
+$config->{force_git_url}      = $force_git_url      if defined $force_git_url;
 
 pod2usage() unless $config->{work_dir};
 pod2usage() unless $config->{server_url};
@@ -77,6 +79,7 @@ ukigumo-agent.pl - CI agent server
         --port=80                        Bind port (Default: 1984)
         --timeout=123                    Timeout seconds (Default: Not timeout)
         --ignore_github_tags             ignore push event of GitHub if it sends with tags
+        --force_git_url                  always use Git URL
 
 =head1 DESCRIPTION
 

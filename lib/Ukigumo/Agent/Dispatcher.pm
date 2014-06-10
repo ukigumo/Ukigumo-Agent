@@ -13,13 +13,14 @@ get '/' => sub {
 
     $c->render(
         'index.tt' => {
-            children     => $c->manager->children,
-            job_queue    => $c->manager->job_queue,
-            server_url   => $c->manager->server_url,
-            work_dir     => $c->manager->work_dir,
-            max_children => $c->manager->max_children,
-            timeout      => $c->manager->timeout,
+            children           => $c->manager->children,
+            job_queue          => $c->manager->job_queue,
+            server_url         => $c->manager->server_url,
+            work_dir           => $c->manager->work_dir,
+            max_children       => $c->manager->max_children,
+            timeout            => $c->manager->timeout,
             ignore_github_tags => $c->manager->ignore_github_tags,
+            force_git_url      => $c->manager->force_git_url,
         }
     );
 };
@@ -58,7 +59,7 @@ post '/api/github_hook' => sub {
             #   ...
             # commit => $commits[$#commits]->{id},
             my $repo_url = $payload->{repository}->{url};
-            if ($ENV{UKIGUMO_AGENT_GITHUB_HOOK_FORCE_GIT_URL}) {
+            if ($c->manager->force_git_url) {
                 # From: https://github.com/tokuhirom/plenv.git
                 # To: git@github.com:tokuhirom/plenv.git
                 $repo_url =~ s!\Ahttps?://([^/]+)/!git\@$1:!;
@@ -98,4 +99,3 @@ post '/api/github_hook' => sub {
 };
 
 1;
-
