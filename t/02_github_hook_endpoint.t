@@ -117,7 +117,7 @@ subtest 'replace http URL to git-URL when `--force_git_url` is enabled' => sub {
         },
     );
     is $res->code, 200;
-    is_deeply decode_json($res->content)->{repository}, 'git@github.com:ukigumo/Ukigumo-Agent.git';
+    is decode_json($res->content)->{repository}, 'git@github.com:ukigumo/Ukigumo-Agent.git';
 };
 
 done_testing;
