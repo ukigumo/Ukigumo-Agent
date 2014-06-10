@@ -102,5 +102,23 @@ subtest 'do nothing when `deleted` is true' => sub {
     is_deeply decode_json($res->content), {};
 };
 
+subtest 'replace http URL to git-URL when `--force_git_url` is enabled' => sub {
+    my $agent = t::Util::build_ukigumo_agent("--force_git_url");
+
+    my $res = $ua->post(
+        "http://127.0.0.1:@{[ $agent->port ]}/api/github_hook",
+        +{
+            payload => encode_json({
+                repository => {
+                    url => 'https://github.com/ukigumo/Ukigumo-Agent.git',
+                },
+                ref => 'refs/heads/branch',
+            }),
+        },
+    );
+    is $res->code, 200;
+    is_deeply decode_json($res->content)->{repository}, 'git@github.com:ukigumo/Ukigumo-Agent.git';
+};
+
 done_testing;
 
