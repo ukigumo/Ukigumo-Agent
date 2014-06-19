@@ -5,7 +5,7 @@ requires 'Twiggy';
 requires 'Amon2' => 6.00;
 requires 'Amon2::Plugin::ShareDir';
 requires 'Ukigumo::Client' => '0.31';
-requires 'Ukigumo::Common' => '0.09';
+requires 'Ukigumo::Common' => '0.10';
 requires 'Data::Validator';
 requires 'Text::Xslate';
 requires 'Time::Duration';
@@ -18,6 +18,8 @@ requires 'List::Util';
 requires 'Pod::Usage';
 requires 'autodie';
 requires 'version';
+requires 'File::Spec';
+requires 'File::Path';
 
 on configure => sub {
     requires 'Module::Build::Tiny' => '0.035';

@@ -20,12 +20,14 @@ $|++;
 
 my $host = '0.0.0.0';
 my $port = 1984;
+my $cleanup_cycle = 0;
 
 GetOptions(
     'c|config=s'         => \my $file,
 
     'h|host=s'           => \$host,
     'p|port=i'           => \$port,
+    'cleanup_cycle=i'    => \$cleanup_cycle,
 
     'work_dir=s'         => \my $work_dir,
     'server_url=s'       => \my $server_url,
@@ -41,6 +43,7 @@ $config->{server_url}         = $server_url         if defined $server_url;
 $config->{timeout}            = $timeout            if defined $timeout;
 $config->{ignore_github_tags} = $ignore_github_tags if defined $ignore_github_tags;
 $config->{force_git_url}      = $force_git_url      if defined $force_git_url;
+$config->{cleanup_cycle}      = $cleanup_cycle      if defined $cleanup_cycle;
 
 pod2usage() unless $config->{work_dir};
 pod2usage() unless $config->{server_url};
@@ -80,6 +83,7 @@ ukigumo-agent.pl - CI agent server
         --timeout=123                    Timeout seconds (Default: Not timeout)
         --ignore_github_tags             ignore push event of GitHub if it sends with tags
         --force_git_url                  always use Git URL
+        --cleanup_cycle=3                Days of cleanup cycle to remove directory of old branch (Default: 0 (means don't cleanup))
 
 =head1 DESCRIPTION
 
