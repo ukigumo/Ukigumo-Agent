@@ -186,7 +186,7 @@ sub run_job {
         $self->logger->warnf("[child] error: $@") if $@;
 
         if (my $cleanup_cycle = $self->cleanup_cycle) {
-            my $project_dir = File::Spec->catfile($client->work_dir, normalize_path($client->project));
+            my $project_dir = File::Spec->catfile($client->workdir, normalize_path($client->project));
             cleanup_old_branch_dir($project_dir, $cleanup_cycle);
         }
 
