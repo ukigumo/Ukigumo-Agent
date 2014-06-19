@@ -15,7 +15,7 @@ sub cleanup_old_branch_dir {
     return if $cleanup_cycle <= 0;
 
     my $now = time;
-    for my $branches_dir (glob "*") {
+    for my $branches_dir (glob "$parent_dir/*") {
         my $last_modified = (stat $branches_dir)[9];
         if ($now - $last_modified > $cleanup_cycle * ONE_DAY()) {
             rmtree($branches_dir);
