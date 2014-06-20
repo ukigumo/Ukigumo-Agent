@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom AAJKLFJEF@ GMAIL COM>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.15.0, CPAN::Meta::Converter version 2.133380",
+   "generated_by" : "Minilla/v1.1.0, CPAN::Meta::Converter version 2.133380",
    "license" : [
       "perl_5"
    ],
@@ -48,6 +48,8 @@
             "Amon2::Plugin::ShareDir" : "0",
             "Coro" : "0",
             "Data::Validator" : "0",
+            "File::Path" : "0",
+            "File::Spec" : "0",
             "Getopt::Long" : "2.42",
             "JSON" : "2",
             "List::Util" : "0",
@@ -59,6 +61,7 @@
             "Time::Duration" : "0",
             "Twiggy" : "0",
             "Ukigumo::Client" : "0.31",
+            "Ukigumo::Common" : "0.10",
             "autodie" : "0",
             "parent" : "0",
             "perl" : "5.010001",
@@ -88,12 +91,14 @@
          "web" : "https://github.com/ukigumo/Ukigumo-Agent"
       }
    },
-   "version" : "v0.1.6",
+   "version" : "v0.1.7",
    "x_authority" : "cpan:TOKUHIROM",
    "x_contributors" : [
       "Tomohiro Hosaka <bokutin@bokut.in>",
       "mattn <mattn.jp@gmail.com>",
       "Tokuhiro Matsuno <tokuhirom@gmail.com>",
-      "moznion <moznion@gmail.com>"
+      "Yoshihiro Sugi <sugi1982@gmail.com>",
+      "ikasam_a <masaki.nakagawa@gmail.com>",
+      "Taiki Kawakami <moznion@gmail.com>"
    ]
 }

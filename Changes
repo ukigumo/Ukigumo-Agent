@@ -2,6 +2,15 @@ Revision history for Perl extension Ukigumo::Agent
 
 {{$NEXT}}
 
+v0.1.7 2014-06-20T02:37:22Z
+
+    - Support `ignore_github_tags` option
+    - Support `cleanup_cycle` option
+    - Support `force_git_url` option (@ikasam_a++)
+    - Support to accept the configuration file (@ikasam_a++)
+    - Do not run on deleted hook
+    - Fix typo (@sugyan++)
+
 v0.1.6 2014-05-02T03:50:38Z
 
     - Fix tests (for http://www.cpantesters.org/cpan/report/3686bd7c-d107-11e3-b552-b2fee0bfc7aa and more)
