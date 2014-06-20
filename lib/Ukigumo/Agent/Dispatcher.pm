@@ -21,6 +21,7 @@ get '/' => sub {
             timeout            => $c->manager->timeout,
             ignore_github_tags => $c->manager->ignore_github_tags,
             force_git_url      => $c->manager->force_git_url,
+            cleanup_cycle      => $c->manager->cleanup_cycle,
         }
     );
 };

@@ -2,9 +2,11 @@ package Ukigumo::Agent::Manager;
 use strict;
 use warnings;
 use utf8;
+use Ukigumo::Agent::Cleaner qw/cleanup_old_branch_dir/;
 use Ukigumo::Client;
 use Ukigumo::Client::VC::Git;
 use Ukigumo::Client::Executor::Perl;
+use Ukigumo::Helper qw/normalize_path/;
 use Ukigumo::Logger;
 use Coro;
 use Coro::AnyEvent;
@@ -61,6 +63,13 @@ has 'max_children' => (
     isa     => 'Int',
     lazy    => 1,
     default => sub { shift->config->{max_children} // 1 },
+);
+
+has 'cleanup_cycle' => (
+    is      => 'ro',
+    isa     => 'Int',
+    lazy    => 1,
+    default => sub { shift->config->{cleanup_cycle} || 0 },
 );
 
 has 'job_queue' => (
@@ -175,6 +184,12 @@ sub run_job {
     } else {
         eval { $client->run() };
         $self->logger->warnf("[child] error: $@") if $@;
+
+        if (my $cleanup_cycle = $self->cleanup_cycle) {
+            my $project_dir = File::Spec->catfile($client->workdir, normalize_path($client->project));
+            cleanup_old_branch_dir($project_dir, $cleanup_cycle);
+        }
+
         $self->logger->infof("[child] finished to work");
         exit;
     }
