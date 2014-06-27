@@ -161,7 +161,7 @@ sub run_job {
                     $self->logger->warnf("[child] timeout");
                     eval { $client->report_timeout($client_log_filename) };
                     if ($@) {
-                        $self->logger->warnf("[child] fail on sending timeout report $@");
+                        $self->logger->warnf("[child] fail on sending timeout report: $@");
                     }
                 }
 

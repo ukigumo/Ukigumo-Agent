@@ -8,6 +8,7 @@ use AnyEvent;
 use Coro::AnyEvent;
 use File::Temp qw/tempdir tempfile/;
 use Ukigumo::Client;
+use Ukigumo::Client::VC::Callback;
 use Ukigumo::Logger;
 use Ukigumo::Agent;
 
@@ -18,9 +19,17 @@ my $tmpfilename = '';
 
 *Ukigumo::Client::new = sub {
     bless {
-        logfh => File::Temp->new(UNLINK => 1)
+        logfh => File::Temp->new(UNLINK => 1),
+        notifiers => +[],
+        vc => Ukigumo::Client::VC::Callback->new(
+            update_cb  => sub { },
+            branch     => 'master',
+            repository => 'git:...',
+        ),
     }, 'Ukigumo::Client';
 };
+
+*Ukigumo::Client::send_to_server = sub {};
 
 my $original_agent__take_a_break = *Ukigumo::Agent::Manager::_take_a_break{CODE};
 *Ukigumo::Agent::Manager::_take_a_break = sub {
@@ -75,14 +84,15 @@ subtest 'timeout' => sub {
     my $got = do { local $/; <$fh>; };
 
     like $got, qr/
-        Spawned\ (\d+)\n
+        \ASpawned\ (\d+)\n
         \[child]\ timeout\n
+        sending\ notification:\ master,\ 6\n
         \[child\ exit]\ pid:\ \1,\ status:\ 15\n
         \[child\ exit]\ run\ new\ job\n
         (?:Spawned\ (\d+)\n|\[child]\ finished\ to\ work\n)
         (?:Spawned\ (\d+)\n|\[child]\ finished\ to\ work\n)
         \[child\ exit]\ pid:\ \2,\ status:\ 0\n
-        \[child\ exit]\ There\ is\ no\ jobs\.\ sleep\.\.\.\n
+        \[child\ exit]\ There\ is\ no\ jobs\.\ sleep\.\.\.\n\Z
     /x;
 };
 
