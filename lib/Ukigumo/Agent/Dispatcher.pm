@@ -29,7 +29,7 @@ get '/' => sub {
 my $rule = Data::Validator->new(
     repository => { isa => 'Str' },
     branch     => { isa => 'Str' },
-)->with('NoThrow');
+)->with(qw/NoThrow NoRestricted/);
 post '/api/v0/enqueue' => sub {
     my $c = shift;
 
