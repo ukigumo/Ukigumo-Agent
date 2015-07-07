@@ -29,7 +29,7 @@ get '/' => sub {
 my $rule = Data::Validator->new(
     repository => { isa => 'Str' },
     branch     => { isa => 'Str' },
-)->with(qw/NoThrow NoRestricted/);
+)->with('NoThrow');
 post '/api/v0/enqueue' => sub {
     my $c = shift;
 
@@ -42,7 +42,7 @@ post '/api/v0/enqueue' => sub {
         return $res;
     }
 
-    $c->manager->register_job($args);
+    $c->manager->register_job(+{%$args});
 
     return $c->render_json(+{});
 };
