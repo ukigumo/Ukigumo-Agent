@@ -124,9 +124,9 @@ sub run_job {
         vc          => $vc,
         executor    => Ukigumo::Client::Executor::Perl->new(),
         server_url  => $self->server_url,
-        compare_url => $args->{compare_url},
-        repository_owner => $args->{repository_owner},
-        repository_name  => $args->{repository_name},
+        compare_url => $args->{compare_url} || '',
+        repository_owner => $args->{repository_owner} || '',
+        repository_name  => $args->{repository_name} || '',
     );
 
     my $client_log_filename = $client->logfh->filename;

@@ -42,7 +42,7 @@ post '/api/v0/enqueue' => sub {
         return $res;
     }
 
-    $c->manager->register_job($args);
+    $c->manager->register_job(+{%$args});
 
     return $c->render_json(+{});
 };
