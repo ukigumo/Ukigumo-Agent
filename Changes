@@ -2,6 +2,10 @@ Revision history for Perl extension Ukigumo::Agent
 
 {{$NEXT}}
 
+v0.1.8 2015-10-22T08:19:58Z
+
+    - Fixed the error "restricted hash" (@hayajo++)
+
 v0.1.7 2014-06-20T02:37:22Z
 
     - Support `ignore_github_tags` option
