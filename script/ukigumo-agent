@@ -73,7 +73,7 @@ ukigumo-agent.pl - CI agent server
 
 =head1 SYNOPSIS
 
-    % ukigumo-agent.pl --server_url=http://example.com/
+    % ukigumo-agent --server_url=http://example.com/ --work_dir=/tmp/
 
         --config=config.pl               Configuration file
         --server_url=http://example.com  ukigumo-server URL
