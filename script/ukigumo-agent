@@ -34,6 +34,7 @@ GetOptions(
     'timeout=i'          => \my $timeout,
     'ignore_github_tags' => \my $ignore_github_tags,
     'force_git_url'      => \my $force_git_url,
+    'skip_if_unmodified' => \my $skip_if_unmodified,
 );
 
 my $config = ($file && -f $file) ? Ukigumo::Agent->load_config($file) : +{};
@@ -44,6 +45,7 @@ $config->{timeout}            = $timeout            if defined $timeout;
 $config->{ignore_github_tags} = $ignore_github_tags if defined $ignore_github_tags;
 $config->{force_git_url}      = $force_git_url      if defined $force_git_url;
 $config->{cleanup_cycle}      = $cleanup_cycle      if defined $cleanup_cycle;
+$config->{skip_if_unmodified} = $skip_if_unmodified if defined $skip_if_unmodified;
 
 pod2usage() unless $config->{work_dir};
 pod2usage() unless $config->{server_url};
@@ -84,6 +86,7 @@ ukigumo-agent.pl - CI agent server
         --ignore_github_tags             ignore push event of GitHub if it sends with tags
         --force_git_url                  always use Git URL
         --cleanup_cycle=3                Days of cleanup cycle to remove directory of old branch (Default: 0 (means don't cleanup))
+        --skip_if_unmodified             skip testing if repository is unmodified
 
 =head1 DESCRIPTION
 
