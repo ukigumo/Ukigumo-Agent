@@ -91,6 +91,13 @@ has 'logger' => (
     default => sub { Ukigumo::Logger->new },
 );
 
+has 'skip_if_unmodified' => (
+    is      => 'ro',
+    isa     => 'Bool',
+    lazy    => 1,
+    default => sub { shift->config->{skip_if_unmodified} // 0 },
+);
+
 no Mouse;
 
 sub count_children {
@@ -118,6 +125,7 @@ sub run_job {
     my $vc = Ukigumo::Client::VC::Git->new(
         branch     => $branch,
         repository => $repository,
+        ($self->skip_if_unmodified ? (skip_if_unmodified => $self->skip_if_unmodified) : ()),
     );
     my $client = Ukigumo::Client->new(
         workdir     => $self->work_dir,
