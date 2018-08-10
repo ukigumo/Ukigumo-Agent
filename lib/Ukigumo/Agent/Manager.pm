@@ -193,14 +193,13 @@ sub run_job {
             };
         }
     } else {
-        eval { $client->run() };
-        $self->logger->warnf("[child] error: $@") if $@;
-
         if (my $cleanup_cycle = $self->cleanup_cycle) {
             my $project_dir = File::Spec->catfile($client->workdir, normalize_path($client->project));
             cleanup_old_branch_dir($project_dir, $cleanup_cycle);
         }
 
+        eval { $client->run() };
+        $self->logger->warnf("[child] error: $@") if $@;
         $self->logger->infof("[child] finished to work");
         exit;
     }
